@@ -12,7 +12,7 @@ namespace CashFlow.Api.Controllers
         public IActionResult Register([FromBody] RequestRegisterExpense request)
         {
             var useCase = new RegisterExpenseUseCase();
-            
+
             var response = useCase.Execute(request);
 
             return Created(string.Empty, response);
