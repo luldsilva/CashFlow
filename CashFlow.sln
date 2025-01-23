@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D4172F3B-5293-4DAA-95DB-9BA431B01DC6}"
 EndProject
@@ -18,6 +18,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashFlow.Exception", "src\CashFlow.Exception\CashFlow.Exception.csproj", "{D46FDF1A-995C-472B-B10C-B35CAE3C9E26}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashFlow.Infrastructure", "src\CashFlow.Infrastructure\CashFlow.Infrastructure.csproj", "{DC05949D-C401-441E-88F5-C40C111BAD13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validators.Tests", "tests\Validators.Tests\Validators.Tests.csproj", "{AF44B869-7BD5-4C37-B7E7-A29C08EAF4F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonTestUtilities", "tests\CommonTestUtilities\CommonTestUtilities.csproj", "{8B34D7A7-681F-4EAE-8A40-5AA421468AE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +53,14 @@ Global
 		{DC05949D-C401-441E-88F5-C40C111BAD13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC05949D-C401-441E-88F5-C40C111BAD13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC05949D-C401-441E-88F5-C40C111BAD13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF44B869-7BD5-4C37-B7E7-A29C08EAF4F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF44B869-7BD5-4C37-B7E7-A29C08EAF4F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF44B869-7BD5-4C37-B7E7-A29C08EAF4F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF44B869-7BD5-4C37-B7E7-A29C08EAF4F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B34D7A7-681F-4EAE-8A40-5AA421468AE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B34D7A7-681F-4EAE-8A40-5AA421468AE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B34D7A7-681F-4EAE-8A40-5AA421468AE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B34D7A7-681F-4EAE-8A40-5AA421468AE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,5 +72,7 @@ Global
 		{39B8EE8C-4270-4817-9879-94619F3F8E55} = {D4172F3B-5293-4DAA-95DB-9BA431B01DC6}
 		{D46FDF1A-995C-472B-B10C-B35CAE3C9E26} = {D4172F3B-5293-4DAA-95DB-9BA431B01DC6}
 		{DC05949D-C401-441E-88F5-C40C111BAD13} = {D4172F3B-5293-4DAA-95DB-9BA431B01DC6}
+		{AF44B869-7BD5-4C37-B7E7-A29C08EAF4F7} = {33A12ED7-D1A0-4527-AAE7-21B2987B7ABD}
+		{8B34D7A7-681F-4EAE-8A40-5AA421468AE1} = {33A12ED7-D1A0-4527-AAE7-21B2987B7ABD}
 	EndGlobalSection
 EndGlobal
