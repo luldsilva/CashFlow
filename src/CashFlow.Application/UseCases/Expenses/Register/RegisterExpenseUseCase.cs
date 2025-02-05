@@ -1,12 +1,21 @@
 ﻿using CashFlow.Communication.Requests;
 using CashFlow.Communication.Responses;
 using CashFlow.Domain.Entities;
+using CashFlow.Domain.Repositories;
+using CashFlow.Domain.Repositories.Expenses;
 using CashFlow.Exception.ExceptionsBase;
 
 namespace CashFlow.Application.UseCases.Expenses.Register
 {
-    public class RegisterExpenseUseCase
+    public class RegisterExpenseUseCase : IRegisterExpenseUseCase
     {
+        private readonly IExepensesRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
+        public RegisterExpenseUseCase(IExepensesRepository repository, IUnitOfWork unitOfWork)
+        {
+            _repository = repository;
+            _unitOfWork = unitOfWork;
+        }
         public ResponseRegisteredExpense Execute(RequestRegisterExpense request)
         {
             Validate(request);
@@ -20,10 +29,15 @@ namespace CashFlow.Application.UseCases.Expenses.Register
                 PaymentType = (Domain.Enums.PaymentType)request.PaymentType,
             };
 
+            _repository.Add(entity);
+
+            _unitOfWork.Commit();
+
             return new ResponseRegisteredExpense();
         }
 
-        private void Validate(RequestRegisterExpense request) {
+        private void Validate(RequestRegisterExpense request)
+        {
             var validator = new RegisterExpenseValidator();
 
             var result = validator.Validate(request);
