@@ -4,6 +4,6 @@ namespace CashFlow.Domain.Repositories.Expenses
 {
     public interface IExepensesRepository
     {
-        void Add(Expense expense);
+        Task Add(Expense expense);
     }
 }
