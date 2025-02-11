@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CashFlow.Infrastructure.Repositories
 {
-    internal class ExpensesRepository : IExepensesRepository
+    internal class ExpensesRepository : IExpensesReadOnlyRepository, IExpensesWriteOnlyrepository, IExpensesUpdateOnlyrepository
     {
         private readonly CashFlowDbContext _dbContext;
         public ExpensesRepository(CashFlowDbContext dbContext)
@@ -17,6 +17,20 @@ namespace CashFlow.Infrastructure.Repositories
             await _dbContext.Expenses.AddAsync(expense);
         }
 
+        public async Task<bool> Delete(long id)
+        {
+            var result = await _dbContext.Expenses.FirstOrDefaultAsync(e => e.Id == id);
+
+            if(result is null)
+            {
+                return false;
+            }
+
+            _dbContext.Expenses.Remove(result);
+
+            return true;
+        }
+
         public async Task<List<Expense>> GetAll()
         {
             //Considerando que nao tem id de usuario para filtrar 
@@ -25,9 +39,19 @@ namespace CashFlow.Infrastructure.Repositories
             return await _dbContext.Expenses.AsNoTracking().ToListAsync();
         }
 
-        public async Task<Expense?> GetById(long id)
+        async Task<Expense?> IExpensesReadOnlyRepository.GetById(long id)
         {
             return await _dbContext.Expenses.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
+        }
+
+        async Task<Expense?> IExpensesUpdateOnlyrepository.GetById(long id)
+        {
+            return await _dbContext.Expenses.FirstOrDefaultAsync(e => e.Id == id);
+        }
+
+        public void Update(Expense expense)
+        {
+            _dbContext.Expenses.Update(expense);
         }
     }
 }

@@ -1,6 +1,8 @@
-﻿using CashFlow.Application.UseCases.Expenses.GetAll;
+﻿using CashFlow.Application.UseCases.Expenses.Delete;
+using CashFlow.Application.UseCases.Expenses.GetAll;
 using CashFlow.Application.UseCases.Expenses.GetById;
 using CashFlow.Application.UseCases.Expenses.Register;
+using CashFlow.Application.UseCases.Expenses.Update;
 using CashFlow.Communication.Requests;
 using CashFlow.Communication.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +16,7 @@ namespace CashFlow.Api.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ResponseRegisteredExpense), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Register([FromBody] RequestRegisterExpense request, [FromServices] IRegisterExpenseUseCase useCase)
+        public async Task<IActionResult> Register([FromBody] RequestExpense request, [FromServices] IRegisterExpenseUseCase useCase)
         {
             var response =  await useCase.Execute(request);
 
@@ -33,6 +35,7 @@ namespace CashFlow.Api.Controllers
 
             return NoContent();
         }
+
         [HttpGet]
         [Route("{id}")]
         [ProducesResponseType(typeof(ResponseExpense), StatusCodes.Status200OK)]
@@ -42,6 +45,29 @@ namespace CashFlow.Api.Controllers
             var response = await useCase.Execute(id);
 
             return Ok(response);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete([FromServices] IDeleteExpenseUseCase useCase, [FromRoute] long id)
+        {
+            await useCase.Execute(id);
+
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Update([FromServices] IUpdateExpenseUseCase useCase, [FromRoute] long id, [FromBody] RequestExpense request)
+        {
+            await useCase.Execute(id, request);
+            
+            return NoContent();
         }
     }
 }

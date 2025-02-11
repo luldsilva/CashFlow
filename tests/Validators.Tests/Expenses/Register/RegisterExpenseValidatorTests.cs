@@ -1,4 +1,4 @@
-﻿using CashFlow.Application.UseCases.Expenses.Register;
+﻿using CashFlow.Application.UseCases.Expenses;
 using CashFlow.Communication.Enums;
 using CashFlow.Exception;
 using CommonTestUtilities.Requests;
@@ -13,7 +13,7 @@ namespace Validators.Tests.Expenses.Register
         public void Success()
         {
             //Arrange configuracao, instanciacao das propriedades para executar o teste
-            var validator = new RegisterExpenseValidator();
+            var validator = new ExpenseValidator();
             var request = RequestRegisterExpenseBuilder.Build(); //usando bpgus para mockar as requisicoes
 
             //Act executa a chamada ao metodo que vai ser testado
@@ -28,7 +28,7 @@ namespace Validators.Tests.Expenses.Register
         public void ErrorTitleEmpty ()
         {
             //Arrange
-            var validator = new RegisterExpenseValidator();
+            var validator = new ExpenseValidator();
             var request = RequestRegisterExpenseBuilder.Build();
             request.Title = string.Empty;
 
@@ -45,7 +45,7 @@ namespace Validators.Tests.Expenses.Register
         public void ErrorDateFuture()
         {
             //Arrange
-            var validator = new RegisterExpenseValidator();
+            var validator = new ExpenseValidator();
             var request = RequestRegisterExpenseBuilder.Build();
             request.Date = DateTime.UtcNow.AddDays(1);
 
@@ -62,7 +62,7 @@ namespace Validators.Tests.Expenses.Register
         public void ErrorPaymentTypeInvalid()
         {
             //Arrange
-            var validator = new RegisterExpenseValidator();
+            var validator = new ExpenseValidator();
             var request = RequestRegisterExpenseBuilder.Build();
             request.PaymentType = (PaymentType)700;
 
@@ -81,7 +81,7 @@ namespace Validators.Tests.Expenses.Register
         public void ErrorAmountInvalid(decimal amount)
         {
             //Arrange
-            var validator = new RegisterExpenseValidator();
+            var validator = new ExpenseValidator();
             var request = RequestRegisterExpenseBuilder.Build();
             request.Amount = amount;
 
