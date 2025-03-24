@@ -17,6 +17,11 @@ namespace CashFlow.Application.UseCases.Users.Shared
 
         public override bool IsValid(ValidationContext<T> context, string password)
         {
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                context.MessageFormatter.AppendArgument(ERROR_MESSAGE_KEY, ResourceErrorMessages.INVALID_PASSWORD);
+                return false;
+            }
             if (UpperCaseLetter().IsMatch(password) == false)
             {
                 context.MessageFormatter.AppendArgument(ERROR_MESSAGE_KEY, ResourceErrorMessages.INVALID_PASSWORD);
