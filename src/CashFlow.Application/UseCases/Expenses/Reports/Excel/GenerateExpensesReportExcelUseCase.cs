@@ -2,6 +2,7 @@
 using CashFlow.Domain.Reports;
 using CashFlow.Domain.Repositories.Expenses;
 using CashFlow.Domain.Extensions;
+using CashFlow.Domain.Reports.Messages;
 
 namespace CashFlow.Application.UseCases.Expenses.Reports.Excel
 {
