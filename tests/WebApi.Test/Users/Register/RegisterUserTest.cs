@@ -3,6 +3,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
 using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace WebApi.Test.Users.Register
 {
@@ -23,6 +24,13 @@ namespace WebApi.Test.Users.Register
             var result = await _httpClient.PostAsJsonAsync(METHOD, request);
 
             result.StatusCode.Should().Be(HttpStatusCode.Created);
+
+            var body = await result.Content.ReadAsStreamAsync();
+
+            var response = await JsonDocument.ParseAsync(body);
+
+            response.RootElement.GetProperty("name").GetString().Should().Be(request.Name);
+            response.RootElement.GetProperty("token").GetString().Should().NotBeNullOrEmpty();
         }
     }
 }
