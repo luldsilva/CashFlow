@@ -17,31 +17,30 @@ namespace CashFlow.Infrastructure.Repositories
             await _dbContext.Expenses.AddAsync(expense);
         }
 
-        public async Task<bool> Delete(long id)
+        public async Task Delete(long id)
         {
-            var result = await _dbContext.Expenses.FirstOrDefaultAsync(e => e.Id == id);
+            var result = await _dbContext.Expenses.FindAsync(id);
 
-            if (result is null)
+            if (result is not null)
             {
-                return false;
+                _dbContext.Expenses.Remove(result);
             }
-
-            _dbContext.Expenses.Remove(result);
-
-            return true;
         }
 
-        public async Task<List<Expense>> GetAll()
+        public async Task<List<Expense>> GetAll(User user)
         {
             //Considerando que nao tem id de usuario para filtrar 
             //AsNoTracking evita do enity framework guardar em cache as informcacoes vinda da base, melhora performance da query e gasta menos memoria
             //So deve ser usado caso tenhamos certeza de que quem usa o getAll nao deve alterar os seus dados.
-            return await _dbContext.Expenses.AsNoTracking().ToListAsync();
+            return await _dbContext.Expenses
+                .AsNoTracking()
+                .Where(e => e.UserId == user.Id)
+                .ToListAsync();
         }
 
-        async Task<Expense?> IExpensesReadOnlyRepository.GetById(long id)
+        async Task<Expense?> IExpensesReadOnlyRepository.GetById(User user, long id)
         {
-            return await _dbContext.Expenses.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
+            return await _dbContext.Expenses.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id && e.UserId == user.Id);
         }
 
         async Task<Expense?> IExpensesUpdateOnlyrepository.GetById(User user, long id)
