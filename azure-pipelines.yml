@@ -13,7 +13,26 @@ steps:
   displayName: Build Solution
   inputs:
     command: build
+
 - task: DotNetCoreCLI@2
   displayName: Run Unit & Integration Tests
   inputs:
     command: test
+
+- script: |
+    git config --global user.name "Lucas Silva"
+    git config --global user.email "lucasstrlisilva@outlook.com"
+
+    cd $(Build.SourcesDirectory)
+
+    # Adiciona o repositório do Azure como remoto
+    git remote add azure https://$(AZURE_REPO_PAT)@dev.azure.com/lucasstrlisilva/_git/Cashflow
+
+    # Puxa o histórico local completo (se necessário)
+    git fetch --all
+
+    # Faz push da branch atual (develop) para o Azure Repos
+    git push azure develop --force
+  displayName: 'Sync GitHub code to Azure Repos'
+  env:
+    AZURE_REPO_PAT: $(AZURE_REPO_PAT)
