@@ -8,6 +8,9 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+- group: SyncToAzure
+
 steps:
 - task: DotNetCoreCLI@2
   displayName: Build Solution
