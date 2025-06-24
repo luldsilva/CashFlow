@@ -33,6 +33,9 @@ steps:
     git remote add azure https://lucasstrlisilva:${PAT_TOKEN}@dev.azure.com/lucasstrlisilva/_git/Cashflow
 
     git fetch --all
+
+    git checkout -b develop
+
     git push azure develop --force
   displayName: 'Sync GitHub code to Azure Repos'
   env:
