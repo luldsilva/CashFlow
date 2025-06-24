@@ -28,13 +28,11 @@ steps:
 
     cd $(Build.SourcesDirectory)
 
-    # Adiciona o repositório do Azure como remoto
-    git remote add azure https://$(AZURE_REPO_PAT)@dev.azure.com/lucasstrlisilva/_git/Cashflow
+    export PAT_TOKEN=$(AZURE_REPO_PAT)
 
-    # Puxa o histórico local completo (se necessário)
+    git remote add azure https://lucasstrlisilva:${PAT_TOKEN}@dev.azure.com/lucasstrlisilva/_git/Cashflow
+
     git fetch --all
-
-    # Faz push da branch atual (develop) para o Azure Repos
     git push azure develop --force
   displayName: 'Sync GitHub code to Azure Repos'
   env:
