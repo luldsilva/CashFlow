@@ -23,7 +23,7 @@ namespace CashFlow.Api.Controllers
             var response =  await useCase.Execute(request);
 
             return Created(string.Empty, response);
-        } 
+        }
 
         [HttpGet]
         [ProducesResponseType(typeof(ResponseExpenses), StatusCodes.Status201Created)]
