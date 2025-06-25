@@ -1,0 +1,45 @@
+name: Build & Run Tests CashFlow API
+
+trigger:
+  branches:
+    include:
+      - develop
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+- group: SyncToAzure
+
+steps:
+- checkout: self
+  fetchDepth: 0
+
+- task: DotNetCoreCLI@2
+  displayName: Build Solution
+  inputs:
+    command: build
+
+- task: DotNetCoreCLI@2
+  displayName: Run Unit & Integration Tests
+  inputs:
+    command: test
+
+- script: |
+    git config --global user.name "Lucas Silva"
+    git config --global user.email "lucasstrlisilva@outlook.com"
+
+    cd $(Build.SourcesDirectory)
+
+    export PAT_TOKEN=$(AZURE_REPO_PAT)
+
+    git remote add azure https://lucasstrlisilva:${PAT_TOKEN}@dev.azure.com/lucasstrlisilva/_git/Cashflow
+
+    git fetch --all
+
+    git checkout -b develop
+
+    git push azure develop --force
+  displayName: 'Sync GitHub code to Azure Repos'
+  env:
+    AZURE_REPO_PAT: $(AZURE_REPO_PAT)
