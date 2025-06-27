@@ -12,6 +12,9 @@ variables:
 - group: SyncToAzure
 
 steps:
+- checkout: self
+  fetchDepth: 0
+
 - task: DotNetCoreCLI@2
   displayName: Build Solution
   inputs:

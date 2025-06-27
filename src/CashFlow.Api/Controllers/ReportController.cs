@@ -25,7 +25,7 @@ namespace CashFlow.Api.Controllers
                 return File(file, MediaTypeNames.Application.Octet, "report.xlsx");
             
             return NoContent();
-        } 
+        }
 
         [HttpGet("pdf")]
         [ProducesResponseType(StatusCodes.Status200OK)]

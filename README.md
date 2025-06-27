@@ -8,7 +8,7 @@ Dentre os pacotes NuGet utilizados, o **AutoMapper** é o responsável pelo mape
 
 ### Features
 - **Domain-Driven Design (DDD):** Estrutura modular que facilita o entendimento e a manutenção do domínio da aplicação.
-- **Testes de Unidade:** Testes abrangentes com FluentAssertions para garantir a funcionalidade e a qualidade.
+- **Testes de unidade e de integração:** Testes abrangentes com FluentAssertions para garantir a funcionalidade e a qualidade.
 - **Geração de Relatório:** Capacidade de exportar relatórios detalhados para **PDF** e **Excel**, oferecendo uma análise visual e eficaz das despesas.
 - **RESTful API com Documentaçao Swagger:** Interface documentada que facilita a integração e o teste por parte dos desenvolvedores.
 
