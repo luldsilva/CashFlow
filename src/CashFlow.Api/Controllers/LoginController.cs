@@ -14,6 +14,7 @@ namespace CashFlow.Api.Controllers
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Login([FromServices] IDoLoginUseCase useCase, [FromBody] RequestLogin request)
         {
+            //Estamos validando o modelo? ex: tipo de dados inseridos etc
             var response = await useCase.Execute(request);
 
             return Ok(response);

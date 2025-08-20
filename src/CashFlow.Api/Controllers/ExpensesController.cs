@@ -15,6 +15,7 @@ namespace CashFlow.Api.Controllers
     [Authorize]
     public class ExpensesController : ControllerBase
     {
+        //Estamos validando o modelo? ex: tipo de dados inseridos etc
         [HttpPost]
         [ProducesResponseType(typeof(ResponseRegisteredExpense), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]

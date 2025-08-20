@@ -12,6 +12,7 @@ namespace CashFlow.Api.Controllers
     [Authorize(Roles = Roles.ADMIN)]
     public class ReportController : Controller
     {
+        //Estamos validando o modelo? ex: tipo de dados inseridos etc
         [HttpGet("excel")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
