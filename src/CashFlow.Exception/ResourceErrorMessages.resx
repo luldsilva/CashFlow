@@ -120,6 +120,18 @@
   <data name="AMOUNT_MUST_BE_GREATER_THAN_ZERO" xml:space="preserve">
     <value>The Amount must be greater than zero.</value>
   </data>
+  <data name="ATTACHMENT_CONTENT_TYPE_NOT_ALLOWED" xml:space="preserve">
+    <value>Attachment content type is not allowed.</value>
+  </data>
+  <data name="ATTACHMENT_EMPTY" xml:space="preserve">
+    <value>Attachment cannot be empty.</value>
+  </data>
+  <data name="ATTACHMENT_FILE_NAME_REQUIRED" xml:space="preserve">
+    <value>Attachment file name is required.</value>
+  </data>
+  <data name="ATTACHMENT_TOO_LARGE" xml:space="preserve">
+    <value>Attachment exceeds the allowed size limit.</value>
+  </data>
   <data name="EMAIL_ALREADY_REGISTERED" xml:space="preserve">
     <value>E-mail already registered</value>
   </data>

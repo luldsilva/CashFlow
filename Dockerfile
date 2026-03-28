@@ -1,24 +1,23 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
-WORKDIR /usr/src/app
+WORKDIR /src
 
-# Copia o conteúdo da pasta src
+COPY CashFlow.sln ./
 COPY src/ ./src/
 
-# Entra no diretório correto
-WORKDIR /usr/src/app/src/CashFlow.Api
+WORKDIR /src/src/CashFlow.Api
 
-# Restaura os pacotes
 RUN dotnet restore
+RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
 
-# Publica a aplicação
-RUN dotnet publish -c Release -o /usr/src/app/out
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 
-# Runtime stage
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
 
-WORKDIR /usr/src/app
+ENV ASPNETCORE_URLS=http://+:8080
 
-COPY --from=build-env /usr/src/app/out .
+EXPOSE 8080
+
+COPY --from=build /app/publish ./
 
 ENTRYPOINT ["dotnet", "CashFlow.Api.dll"]

@@ -68,6 +68,42 @@ namespace CashFlow.Exception {
                 return ResourceManager.GetString("AMOUNT_MUST_BE_GREATER_THAN_ZERO", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Attachment content type is not allowed..
+        /// </summary>
+        public static string ATTACHMENT_CONTENT_TYPE_NOT_ALLOWED {
+            get {
+                return ResourceManager.GetString("ATTACHMENT_CONTENT_TYPE_NOT_ALLOWED", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Attachment cannot be empty..
+        /// </summary>
+        public static string ATTACHMENT_EMPTY {
+            get {
+                return ResourceManager.GetString("ATTACHMENT_EMPTY", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Attachment file name is required..
+        /// </summary>
+        public static string ATTACHMENT_FILE_NAME_REQUIRED {
+            get {
+                return ResourceManager.GetString("ATTACHMENT_FILE_NAME_REQUIRED", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Attachment exceeds the allowed size limit..
+        /// </summary>
+        public static string ATTACHMENT_TOO_LARGE {
+            get {
+                return ResourceManager.GetString("ATTACHMENT_TOO_LARGE", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to E-mail already registered.

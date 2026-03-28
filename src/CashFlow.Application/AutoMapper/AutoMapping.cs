@@ -20,6 +20,7 @@ namespace CashFlow.Application.AutoMapper
 
         private void EntityToResponse()
         {
+            CreateMap<ExpenseAttachment, ResponseExpenseAttachment>();
             CreateMap<Expense, ResponseRegisteredExpense>();
             CreateMap<Expense, ResponseShortExpense>();
             CreateMap<Expense, ResponseExpense>();

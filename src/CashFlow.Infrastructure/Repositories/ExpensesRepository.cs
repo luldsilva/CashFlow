@@ -40,12 +40,17 @@ namespace CashFlow.Infrastructure.Repositories
 
         async Task<Expense?> IExpensesReadOnlyRepository.GetById(User user, long id)
         {
-            return await _dbContext.Expenses.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id && e.UserId == user.Id);
+            return await _dbContext.Expenses
+                .AsNoTracking()
+                .Include(expense => expense.Attachments)
+                .FirstOrDefaultAsync(e => e.Id == id && e.UserId == user.Id);
         }
 
         async Task<Expense?> IExpensesUpdateOnlyrepository.GetById(User user, long id)
         {
-            return await _dbContext.Expenses.FirstOrDefaultAsync(e => e.Id == id && e.UserId == user.Id);
+            return await _dbContext.Expenses
+                .Include(expense => expense.Attachments)
+                .FirstOrDefaultAsync(e => e.Id == id && e.UserId == user.Id);
         }
 
         public void Update(Expense expense)

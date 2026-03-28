@@ -1,4 +1,5 @@
-﻿using CashFlow.Application.UseCases.Expenses.Delete;
+﻿using CashFlow.Application.UseCases.Expenses.Attachments;
+using CashFlow.Application.UseCases.Expenses.Delete;
 using CashFlow.Application.UseCases.Expenses.GetAll;
 using CashFlow.Application.UseCases.Expenses.GetById;
 using CashFlow.Application.UseCases.Expenses.Register;
@@ -22,6 +23,30 @@ namespace CashFlow.Api.Controllers
         public async Task<IActionResult> Register([FromBody] RequestExpense request, [FromServices] IRegisterExpenseUseCase useCase)
         {
             var response =  await useCase.Execute(request);
+
+            return Created(string.Empty, response);
+        }
+
+        [HttpPost]
+        [Route("{id}/attachments")]
+        [ProducesResponseType(typeof(ResponseExpenseAttachment), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> AddAttachment(
+            [FromRoute] long id,
+            [FromForm] IFormFile file,
+            [FromServices] IAddExpenseAttachmentUseCase useCase,
+            CancellationToken cancellationToken)
+        {
+            await using var stream = file.OpenReadStream();
+
+            var response = await useCase.Execute(
+                id,
+                stream,
+                file.FileName,
+                file.ContentType,
+                file.Length,
+                cancellationToken);
 
             return Created(string.Empty, response);
         }

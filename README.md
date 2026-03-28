@@ -26,7 +26,7 @@ Para obter uma cópia local funcionando, siga estes passos simples.
 ### Requisitos
 - Visual Studio versão 2022+ ou Visual Studio Code
 - Windows 10+ ou Linux/MacOS com [.NET SDK](https://dotnet.microsoft.com/pt-br/download/dotnet/8.0) instalado
-- MySql Server
+- Docker e Docker Compose
 
 ### Instalação
 
@@ -35,7 +35,27 @@ Para obter uma cópia local funcionando, siga estes passos simples.
     ```sh
     git clone https://github.com/luldsilva/CashFlow.git
     ```
-3. Preencha as informações no arquivo `appsettings.Development.json`.
-4. Execute a API e aproveite o seu teste :)
+3. Copie `.env.example` para `.env`.
+4. Suba a infraestrutura local com `docker compose up -d`.
+5. Execute a API.
+
+### Infraestrutura local
+
+O projeto adota neste momento a seguinte base local:
+
+- `MySQL` para persistencia principal
+- `Redis` para apoio operacional e cache
+- `MinIO` para anexos em storage de objetos
+
+A trilha futura de IaC foi preparada na pasta [`infra/terraform`](/home/lucaslisilva/projetos/CashFlow/infra/terraform/README.md), mas o provisionamento cloud permanece adiado ate existir um alvo real de deploy.
+
+### Compose
+
+O `compose.yaml` reintroduz a API junto da infraestrutura base. A aplicacao recebe via variaveis de ambiente:
+
+- conexao com MySQL
+- configuracao de JWT
+- configuracao inicial de storage compativel com `MinIO` e futura migracao para `S3`
+- configuracao basica de Redis
 
 
