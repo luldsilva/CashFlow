@@ -1,5 +1,8 @@
-trigger:
-- master
+# Pipeline legada de release para Azure Container Registry.
+# Mantida no repositório como referência histórica.
+# Desativada temporariamente porque a conta/infra de Azure não está operacional.
+trigger: none
+pr: none
 
 variables:
   dockerRegistryServiceConnection: 'a3d4b33a-62ef-4d37-b27a-1ab1849fb7dd'
@@ -14,6 +17,10 @@ variables:
 pool:
   vmImage: $(vmImageName)
 
+# Quando a trilha de deploy em cloud for retomada, revisar:
+# - secure file `appsettings.Production.json`
+# - service connection do ACR
+# - estratégia atual de build/push versus compose/infra do projeto
 steps:
 - task: DownloadSecureFile@1
   name: appsettings

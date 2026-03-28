@@ -34,10 +34,12 @@ namespace CashFlow.Api.Controllers
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AddAttachment(
             [FromRoute] long id,
-            [FromForm] IFormFile file,
+            [FromForm] RequestExpenseAttachment request,
             [FromServices] IAddExpenseAttachmentUseCase useCase,
             CancellationToken cancellationToken)
         {
+            var file = request.File;
+
             await using var stream = file.OpenReadStream();
 
             var response = await useCase.Execute(

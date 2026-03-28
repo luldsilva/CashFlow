@@ -1,0 +1,297 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>CashFlow Status Summary</title>
+<style>
+  @page { size: A4; margin: 18mm; }
+  body { font-family: Arial, sans-serif; color: #111; line-height: 1.45; font-size: 12px; }
+  h1 { font-size: 22px; margin: 0 0 12px; }
+  h2 { font-size: 17px; margin: 22px 0 8px; border-bottom: 1px solid #ccc; padding-bottom: 3px; }
+  h3 { font-size: 14px; margin: 16px 0 6px; }
+  p { margin: 6px 0; }
+  ul { margin: 6px 0 10px 20px; padding: 0; }
+  li { margin: 3px 0; }
+  pre { white-space: pre-wrap; background: #f5f5f5; padding: 10px; border: 1px solid #ddd; font-size: 11px; overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+<h1>CashFlow Status Summary - 2026-03-28</h1>
+<h2>Executive Summary</h2>
+<p>O projeto saiu de uma base com backend .NET e MySQL para um estado mais completo de ambiente local e de evolucao arquitetural.</p>
+<p>Hoje, o `CashFlow` esta com:</p>
+<ul>
+<li>infraestrutura local funcional em Docker Compose</li>
+<li>API recolocada no stack de containers</li>
+<li>MySQL, Redis e MinIO operacionais no ambiente local</li>
+<li>migrations executando no startup da API</li>
+<li>Swagger funcionando no endpoint local</li>
+<li>suporte inicial a anexos implementado no backend</li>
+<li>trilha futura de IaC preparada, mas ainda sem provisionamento cloud ativo</li>
+</ul>
+<h2>O Que Foi Feito Hoje</h2>
+<h3>1. Infraestrutura local consolidada</h3>
+<p>Foi definida e consolidada a base local do projeto com:</p>
+<ul>
+<li>`api`</li>
+<li>`db` com `mysql:8.0`</li>
+<li>`redis` com `redis:7-alpine`</li>
+<li>`minio` como storage de objetos compativel com `S3`</li>
+</ul>
+<p>Arquivos principais envolvidos:</p>
+<ul>
+<li>`compose.yaml`</li>
+<li>`.env.example`</li>
+<li>`.env`</li>
+<li>`Dockerfile`</li>
+<li>`src/CashFlow.Api/appsettings.json`</li>
+</ul>
+<h3>2. Direcao de storage para anexos definida</h3>
+<p>Foi tomada uma decisao arquitetural importante:</p>
+<ul>
+<li>anexos nao serao tratados como binario dentro de banco</li>
+<li>anexos serao tratados como arquivos em storage de objetos</li>
+<li>metadados dos anexos ficam no banco principal</li>
+</ul>
+<p>Decisao atual:</p>
+<ul>
+<li>`MinIO` local hoje</li>
+<li>`S3` como evolucao natural futura</li>
+<li>`MongoDB` adiado por nao ser obrigatorio neste momento</li>
+</ul>
+<h3>3. Estrutura de infra e IaC preparada</h3>
+<p>Foi criada a base organizacional para evolucao de infraestrutura:</p>
+<ul>
+<li>`infra/README.md`</li>
+<li>`infra/docker/README.md`</li>
+<li>`infra/terraform/README.md`</li>
+</ul>
+<p>Objetivo:</p>
+<ul>
+<li>manter a infraestrutura local simples agora</li>
+<li>deixar a trilha de Terraform pronta para o futuro</li>
+<li>evitar acoplar deploy cloud antes da hora</li>
+</ul>
+<h3>4. Patterns e contexto do projeto formalizados</h3>
+<p>Foi criado um arquivo de referencia para manter padrao arquitetural e de implementacao:</p>
+<ul>
+<li>`docs/project-patterns.md`</li>
+</ul>
+<p>Esse arquivo registra:</p>
+<ul>
+<li>leitura arquitetural atual</li>
+<li>padroes esperados de use cases, controllers e repositorios</li>
+<li>convencoes de nomenclatura</li>
+<li>interpretacao pratica de `SOLID`, `DDD` e `TDD`</li>
+<li>regras para novas features</li>
+</ul>
+<h3>5. Suporte inicial a anexos implementado</h3>
+<p>Foi criada a fundacao de anexos e o primeiro fluxo real de upload.</p>
+<p>O que entrou:</p>
+<ul>
+<li>entidade `ExpenseAttachment`</li>
+<li>relacao entre `Expense` e `ExpenseAttachment`</li>
+<li>migration para criar a tabela `ExpenseAttachments`</li>
+<li>contratos de response com anexos</li>
+<li>abstracao de storage</li>
+<li>implementacao concreta compativel com `S3/MinIO`</li>
+<li>endpoint de upload de anexo para uma despesa</li>
+</ul>
+<p>Arquivos principais:</p>
+<ul>
+<li>`src/CashFlow.Domain/Entities/ExpenseAttachment.cs`</li>
+<li>`src/CashFlow.Domain/Services/Storage/IFileStorageService.cs`</li>
+<li>`src/CashFlow.Infrastructure/Storage/S3CompatibleFileStorageService.cs`</li>
+<li>`src/CashFlow.Application/UseCases/Expenses/Attachments/AddExpenseAttachmentUseCase.cs`</li>
+<li>`src/CashFlow.Api/Controllers/ExpensesController.cs`</li>
+<li>`src/CashFlow.Infrastructure/Migrations/20260327233000_AddExpenseAttachments.cs`</li>
+</ul>
+<h2>Estado Atual Da Aplicacao</h2>
+<h3>Stack local</h3>
+<p>O ambiente local atual esta assim:</p>
+<pre>
+Browser / Client
+        |
+        v
+  CashFlow API (.NET 8)
+        |
+        +--&gt; MySQL 8.0        -&gt; persistencia principal
+        +--&gt; Redis 7          -&gt; suporte futuro para cache/operacao
+        +--&gt; MinIO            -&gt; storage de anexos
+</pre>
+<h3>Infra executando</h3>
+<p>Pelo ultimo estado validado no ambiente:</p>
+<ul>
+<li>`cashflow-api` em execucao na porta `8080`</li>
+<li>`cashflow-db` em execucao e `healthy`</li>
+<li>`cashflow-redis` em execucao e `healthy`</li>
+<li>`cashflow-minio` em execucao</li>
+</ul>
+<p>Endpoints locais relevantes:</p>
+<ul>
+<li>Swagger: `http://localhost:8080/swagger/index.html`</li>
+<li>API base: `http://localhost:8080`</li>
+<li>MinIO API: `http://localhost:9000`</li>
+<li>MinIO Console: `http://localhost:9001`</li>
+<li>MySQL: `localhost:3306`</li>
+<li>Redis: `localhost:6379`</li>
+</ul>
+<h3>Banco de dados atual</h3>
+<p>O banco em uso agora e o `MySQL` do container Docker, nao o servico antigo do Windows.</p>
+<p>Banco criado:</p>
+<ul>
+<li>`cashflow`</li>
+</ul>
+<p>Tabelas relevantes aplicadas via migration:</p>
+<ul>
+<li>`Users`</li>
+<li>`Expenses`</li>
+<li>`ExpenseAttachments`</li>
+<li>`__EFMigrationsHistory`</li>
+</ul>
+<h3>Swagger</h3>
+<p>O Swagger inicialmente quebrou por causa da assinatura do endpoint de upload com `IFormFile`.</p>
+<p>Isso foi corrigido com um request model de formulario, e o Swagger voltou a funcionar.</p>
+<h2>Fluxo Atual De Infra</h2>
+<pre>
+docker compose up -d --build api
+        |
+        +--&gt; sobe db
+        +--&gt; sobe redis
+        +--&gt; sobe minio
+        +--&gt; builda e sobe api
+        |
+        v
+API inicia
+        |
+        v
+executa migrations no MySQL
+        |
+        v
+fica disponivel em http://localhost:8080
+</pre>
+<h2>Fluxo Atual Da API</h2>
+<h3>Fluxo de despesa</h3>
+<pre>
+Request HTTP
+   |
+   v
+Controller
+   |
+   v
+UseCase
+   |
+   v
+Repository / UnitOfWork
+   |
+   v
+MySQL
+</pre>
+<h3>Fluxo de anexo</h3>
+<pre>
+POST /api/expenses/{id}/attachments
+          |
+          v
+ExpensesController.AddAttachment
+          |
+          v
+AddExpenseAttachmentUseCase
+          |
+          +--&gt; valida arquivo
+          +--&gt; carrega despesa do usuario logado
+          +--&gt; gera StorageKey
+          +--&gt; envia arquivo para MinIO
+          +--&gt; adiciona metadado em Expense.Attachments
+          +--&gt; commit no MySQL
+          |
+          v
+ResponseExpenseAttachment
+</pre>
+<h2>Como A Arquitetura Esta Hoje</h2>
+<h3>O que esta forte</h3>
+<ul>
+<li>separacao por camadas esta boa</li>
+<li>controllers continuam finos</li>
+<li>use cases continuam sendo o centro da orquestracao</li>
+<li>persistencia esta atras de repositorios e `UnitOfWork`</li>
+<li>integracoes externas estao indo para abstracoes, nao para controller</li>
+<li>ha base real para testes e evolucao disciplinada</li>
+</ul>
+<h3>O que ainda esta em evolucao</h3>
+<ul>
+<li>dominio ainda e mais anemico do que rico</li>
+<li>Redis ainda esta apenas preparado, sem uso funcional real</li>
+<li>fluxo de anexos existe, mas ainda e inicial</li>
+<li>ainda nao ha estrategia ativa de deploy cloud</li>
+<li>Terraform existe apenas como placeholder estrutural</li>
+</ul>
+<h2>Situações Legadas Tratadas</h2>
+<p>Foram encontrados pipelines legados de Azure DevOps:</p>
+<ul>
+<li>`release-pipeline.yml`</li>
+<li>`sync-build-pipeline.yml`</li>
+</ul>
+<p>Acao tomada:</p>
+<ul>
+<li>pipelines desativadas com `trigger: none`</li>
+<li>historico preservado</li>
+<li>comentarios adicionados para futura retomada consciente</li>
+</ul>
+<h2>Comandos Operacionais Principais</h2>
+<p>Subir stack principal:</p>
+<pre>
+docker compose up -d --build api
+</pre>
+<p>Ver logs da API:</p>
+<pre>
+docker compose logs api -f
+</pre>
+<p>Ver Swagger:</p>
+<pre>
+http://localhost:8080/swagger/index.html
+</pre>
+<p>Entrar no Redis:</p>
+<pre>
+docker compose exec redis redis-cli
+</pre>
+<p>Parar ambiente:</p>
+<pre>
+docker compose down
+</pre>
+<h2>Riscos E Observacoes</h2>
+<h3>1. Data Protection warning</h3>
+<p>O container da API avisou que as chaves de `DataProtection` nao estao persistidas fora do container.</p>
+<p>Impacto atual:</p>
+<ul>
+<li>aceitavel para desenvolvimento local</li>
+<li>deve ser tratado melhor se isso passar a importar para ambiente persistente</li>
+</ul>
+<h3>2. AutoMapper vulnerability warning</h3>
+<p>Ainda existe o warning:</p>
+<ul>
+<li>`NU1903` no pacote `AutoMapper`</li>
+</ul>
+<p>Isso ja era conhecido antes e segue pendente de revisao.</p>
+<h3>3. API build opaco em alguns cenarios locais</h3>
+<p>Durante a sessao, houve comportamento inconsistente de `dotnet build` na `API` em alguns cenarios do ambiente, sem diagnostico claro no log.</p>
+<p>Apesar disso:</p>
+<ul>
+<li>a imagem Docker buildou</li>
+<li>a API subiu</li>
+<li>o Swagger abriu</li>
+<li>as migrations rodaram</li>
+</ul>
+<p>Entao o projeto esta funcional no fluxo principal via container.</p>
+<h2>Leitura Final</h2>
+<p>Hoje o `CashFlow` esta num ponto melhor e mais maduro do que no inicio da sessao.</p>
+<p>Resumo direto:</p>
+<ul>
+<li>a infraestrutura local esta pronta para o desenvolvimento diario</li>
+<li>a API esta integrada ao stack local</li>
+<li>o banco e o storage estao definidos de forma coerente</li>
+<li>anexos deixaram de ser apenas ideia e viraram capacidade inicial real</li>
+<li>a direcao arquitetural do projeto foi documentada</li>
+<li>o projeto esta mais preparado para evoluir sem perder padrao</li>
+</ul>
+</body>
+</html>

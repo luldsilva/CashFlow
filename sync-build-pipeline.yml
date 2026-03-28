@@ -1,9 +1,10 @@
 name: Build & Run Tests CashFlow API
 
-trigger:
-  branches:
-    include:
-      - develop
+# Pipeline legada de sincronização com Azure Repos.
+# Mantida como histórico, mas desativada temporariamente porque a integração Azure
+# não é mais uma dependência operacional do projeto neste momento.
+trigger: none
+pr: none
 
 pool:
   vmImage: ubuntu-latest
@@ -11,6 +12,10 @@ pool:
 variables:
 - group: SyncToAzure
 
+# Quando essa integração voltar a fazer sentido, revisar:
+# - variável `AZURE_REPO_PAT`
+# - repositório remoto do Azure DevOps
+# - necessidade real de espelhar código do GitHub para Azure Repos
 steps:
 - checkout: self
   fetchDepth: 0
