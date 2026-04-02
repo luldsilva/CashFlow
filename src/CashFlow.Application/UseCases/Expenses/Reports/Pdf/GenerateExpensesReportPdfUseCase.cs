@@ -5,6 +5,8 @@ using CashFlow.Domain.Reports;
 using CashFlow.Domain.Reports.Messages;
 using CashFlow.Domain.Repositories.Expenses;
 using CashFlow.Domain.Services.LoggedUser;
+using CashFlow.Exception;
+using CashFlow.Exception.ExceptionsBase;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.Rendering;
@@ -34,7 +36,7 @@ namespace CashFlow.Application.UseCases.Expenses.Reports.Pdf
 
             if(expenses.Count == 0)
             {
-                return [];
+                throw new NotFoundException(ResourceErrorMessages.ResourceManager.GetString("REPORT_WITHOUT_DATA_FOR_MONTH")!);
             }
 
             var document = CreateDocument(loggedUser.Name, month);

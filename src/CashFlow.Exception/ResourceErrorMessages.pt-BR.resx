@@ -165,4 +165,7 @@
   <data name="UNKNOWN_ERROR" xml:space="preserve">
     <value>Erro desconhecido.</value>
   </data>
+  <data name="REPORT_WITHOUT_DATA_FOR_MONTH" xml:space="preserve">
+    <value>Nao ha dados para gerar o relatorio no periodo selecionado.</value>
+  </data>
 </root>

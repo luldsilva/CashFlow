@@ -4,6 +4,8 @@ using CashFlow.Domain.Repositories.Expenses;
 using CashFlow.Domain.Extensions;
 using CashFlow.Domain.Reports.Messages;
 using CashFlow.Domain.Services.LoggedUser;
+using CashFlow.Exception;
+using CashFlow.Exception.ExceptionsBase;
 
 namespace CashFlow.Application.UseCases.Expenses.Reports.Excel
 {
@@ -26,7 +28,7 @@ namespace CashFlow.Application.UseCases.Expenses.Reports.Excel
 
             if(expenses.Count == 0)
             {
-                return [];
+                throw new NotFoundException(ResourceErrorMessages.ResourceManager.GetString("REPORT_WITHOUT_DATA_FOR_MONTH")!);
             }
 
             using var workbook = new XLWorkbook();

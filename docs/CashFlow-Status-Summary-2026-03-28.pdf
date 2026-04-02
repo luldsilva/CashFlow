@@ -1,0 +1,785 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 17 0 R >> >> /Contents 4 0 R >>
+endobj
+3 0 obj
+<< /Type /Pages /Count 7 /Kids [3 0 R 5 0 R 7 0 R 9 0 R 11 0 R 13 0 R 15 0 R] >>
+endobj
+4 0 obj
+<< /Length 1786 >>
+stream
+BT
+/F1 10 Tf
+14 TL
+1 0 0 1 50 792 Tm
+(CASHFLOW STATUS SUMMARY - 2026-03-28) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(EXECUTIVE SUMMARY) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(O projeto saiu de uma base com backend .NET e MySQL para um estado mais completo de ambiente) Tj
+T*
+(local e de evolucao arquitetural.) Tj
+T*
+() Tj
+T*
+(Hoje, o `CashFlow` esta com:) Tj
+T*
+() Tj
+T*
+(? infraestrutura local funcional em Docker Compose) Tj
+T*
+(? API recolocada no stack de containers) Tj
+T*
+(? MySQL, Redis e MinIO operacionais no ambiente local) Tj
+T*
+(? migrations executando no startup da API) Tj
+T*
+(? Swagger funcionando no endpoint local) Tj
+T*
+(? suporte inicial a anexos implementado no backend) Tj
+T*
+(? trilha futura de IaC preparada, mas ainda sem provisionamento cloud ativo) Tj
+T*
+() Tj
+T*
+(O QUE FOI FEITO HOJE) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(1. Infraestrutura local consolidada) Tj
+T*
+() Tj
+T*
+(Foi definida e consolidada a base local do projeto com:) Tj
+T*
+() Tj
+T*
+(? `api`) Tj
+T*
+(? `db` com `mysql:8.0`) Tj
+T*
+(? `redis` com `redis:7-alpine`) Tj
+T*
+(? `minio` como storage de objetos compativel com `S3`) Tj
+T*
+() Tj
+T*
+(Arquivos principais envolvidos:) Tj
+T*
+() Tj
+T*
+(? `compose.yaml`) Tj
+T*
+(? `.env.example`) Tj
+T*
+(? `.env`) Tj
+T*
+(? `Dockerfile`) Tj
+T*
+(? `src/CashFlow.Api/appsettings.json`) Tj
+T*
+() Tj
+T*
+(2. Direcao de storage para anexos definida) Tj
+T*
+() Tj
+T*
+(Foi tomada uma decisao arquitetural importante:) Tj
+T*
+() Tj
+T*
+(? anexos nao serao tratados como binario dentro de banco) Tj
+T*
+(? anexos serao tratados como arquivos em storage de objetos) Tj
+T*
+(? metadados dos anexos ficam no banco principal) Tj
+T*
+() Tj
+T*
+(Decisao atual:) Tj
+T*
+() Tj
+T*
+(? `MinIO` local hoje) Tj
+T*
+(? `S3` como evolucao natural futura) Tj
+T*
+(? `MongoDB` adiado por nao ser obrigatorio neste momento) Tj
+T*
+() Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 17 0 R >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 2072 >>
+stream
+BT
+/F1 10 Tf
+14 TL
+1 0 0 1 50 792 Tm
+(3. Estrutura de infra e IaC preparada) Tj
+T*
+() Tj
+T*
+(Foi criada a base organizacional para evolucao de infraestrutura:) Tj
+T*
+() Tj
+T*
+(? `infra/README.md`) Tj
+T*
+(? `infra/docker/README.md`) Tj
+T*
+(? `infra/terraform/README.md`) Tj
+T*
+() Tj
+T*
+(Objetivo:) Tj
+T*
+() Tj
+T*
+(? manter a infraestrutura local simples agora) Tj
+T*
+(? deixar a trilha de Terraform pronta para o futuro) Tj
+T*
+(? evitar acoplar deploy cloud antes da hora) Tj
+T*
+() Tj
+T*
+(4. Patterns e contexto do projeto formalizados) Tj
+T*
+() Tj
+T*
+(Foi criado um arquivo de referencia para manter padrao arquitetural e de implementacao:) Tj
+T*
+() Tj
+T*
+(? `docs/project-patterns.md`) Tj
+T*
+() Tj
+T*
+(Esse arquivo registra:) Tj
+T*
+() Tj
+T*
+(? leitura arquitetural atual) Tj
+T*
+(? padroes esperados de use cases, controllers e repositorios) Tj
+T*
+(? convencoes de nomenclatura) Tj
+T*
+(? interpretacao pratica de `SOLID`, `DDD` e `TDD`) Tj
+T*
+(? regras para novas features) Tj
+T*
+() Tj
+T*
+(5. Suporte inicial a anexos implementado) Tj
+T*
+() Tj
+T*
+(Foi criada a fundacao de anexos e o primeiro fluxo real de upload.) Tj
+T*
+() Tj
+T*
+(O que entrou:) Tj
+T*
+() Tj
+T*
+(? entidade `ExpenseAttachment`) Tj
+T*
+(? relacao entre `Expense` e `ExpenseAttachment`) Tj
+T*
+(? migration para criar a tabela `ExpenseAttachments`) Tj
+T*
+(? contratos de response com anexos) Tj
+T*
+(? abstracao de storage) Tj
+T*
+(? implementacao concreta compativel com `S3/MinIO`) Tj
+T*
+(? endpoint de upload de anexo para uma despesa) Tj
+T*
+() Tj
+T*
+(Arquivos principais:) Tj
+T*
+() Tj
+T*
+(? `src/CashFlow.Domain/Entities/ExpenseAttachment.cs`) Tj
+T*
+(? `src/CashFlow.Domain/Services/Storage/IFileStorageService.cs`) Tj
+T*
+(? `src/CashFlow.Infrastructure/Storage/S3CompatibleFileStorageService.cs`) Tj
+T*
+(? `src/CashFlow.Application/UseCases/Expenses/Attachments/AddExpenseAttachmentUseCase.cs`) Tj
+T*
+(? `src/CashFlow.Api/Controllers/ExpensesController.cs`) Tj
+T*
+(? `src/CashFlow.Infrastructure/Migrations/20260327233000_AddExpenseAttachments.cs`) Tj
+T*
+() Tj
+T*
+(ESTADO ATUAL DA APLICACAO) Tj
+T*
+() Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 17 0 R >> >> /Contents 8 0 R >>
+endobj
+8 0 obj
+<< /Length 1624 >>
+stream
+BT
+/F1 10 Tf
+14 TL
+1 0 0 1 50 792 Tm
+() Tj
+T*
+(Stack local) Tj
+T*
+() Tj
+T*
+(O ambiente local atual esta assim:) Tj
+T*
+() Tj
+T*
+(    Browser / Client) Tj
+T*
+(            |) Tj
+T*
+(            v) Tj
+T*
+(      CashFlow API \(.NET 8\)) Tj
+T*
+(            |) Tj
+T*
+(            +--> MySQL 8.0        -> persistencia principal) Tj
+T*
+(            +--> Redis 7          -> suporte futuro para cache/operacao) Tj
+T*
+(            +--> MinIO            -> storage de anexos) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(Infra executando) Tj
+T*
+() Tj
+T*
+(Pelo ultimo estado validado no ambiente:) Tj
+T*
+() Tj
+T*
+(? `cashflow-api` em execucao na porta `8080`) Tj
+T*
+(? `cashflow-db` em execucao e `healthy`) Tj
+T*
+(? `cashflow-redis` em execucao e `healthy`) Tj
+T*
+(? `cashflow-minio` em execucao) Tj
+T*
+() Tj
+T*
+(Endpoints locais relevantes:) Tj
+T*
+() Tj
+T*
+(? Swagger: `http://localhost:8080/swagger/index.html`) Tj
+T*
+(? API base: `http://localhost:8080`) Tj
+T*
+(? MinIO API: `http://localhost:9000`) Tj
+T*
+(? MinIO Console: `http://localhost:9001`) Tj
+T*
+(? MySQL: `localhost:3306`) Tj
+T*
+(? Redis: `localhost:6379`) Tj
+T*
+() Tj
+T*
+(Banco de dados atual) Tj
+T*
+() Tj
+T*
+(O banco em uso agora e o `MySQL` do container Docker, nao o servico antigo do Windows.) Tj
+T*
+() Tj
+T*
+(Banco criado:) Tj
+T*
+() Tj
+T*
+(? `cashflow`) Tj
+T*
+() Tj
+T*
+(Tabelas relevantes aplicadas via migration:) Tj
+T*
+() Tj
+T*
+(? `Users`) Tj
+T*
+(? `Expenses`) Tj
+T*
+(? `ExpenseAttachments`) Tj
+T*
+(? `__EFMigrationsHistory`) Tj
+T*
+() Tj
+T*
+(Swagger) Tj
+T*
+() Tj
+T*
+(O Swagger inicialmente quebrou por causa da assinatura do endpoint de upload com) Tj
+T*
+(`IFormFile`.) Tj
+T*
+() Tj
+ET
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 17 0 R >> >> /Contents 10 0 R >>
+endobj
+10 0 obj
+<< /Length 1350 >>
+stream
+BT
+/F1 10 Tf
+14 TL
+1 0 0 1 50 792 Tm
+(Isso foi corrigido com um request model de formulario, e o Swagger voltou a funcionar.) Tj
+T*
+() Tj
+T*
+(FLUXO ATUAL DE INFRA) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(    docker compose up -d --build api) Tj
+T*
+(            |) Tj
+T*
+(            +--> sobe db) Tj
+T*
+(            +--> sobe redis) Tj
+T*
+(            +--> sobe minio) Tj
+T*
+(            +--> builda e sobe api) Tj
+T*
+(            |) Tj
+T*
+(            v) Tj
+T*
+(    API inicia) Tj
+T*
+(            |) Tj
+T*
+(            v) Tj
+T*
+(    executa migrations no MySQL) Tj
+T*
+(            |) Tj
+T*
+(            v) Tj
+T*
+(    fica disponivel em http://localhost:8080) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(FLUXO ATUAL DA API) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(Fluxo de despesa) Tj
+T*
+() Tj
+T*
+(    Request HTTP) Tj
+T*
+(       |) Tj
+T*
+(       v) Tj
+T*
+(    Controller) Tj
+T*
+(       |) Tj
+T*
+(       v) Tj
+T*
+(    UseCase) Tj
+T*
+(       |) Tj
+T*
+(       v) Tj
+T*
+(    Repository / UnitOfWork) Tj
+T*
+(       |) Tj
+T*
+(       v) Tj
+T*
+(    MySQL) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(Fluxo de anexo) Tj
+T*
+() Tj
+T*
+(    POST /api/expenses/{id}/attachments) Tj
+T*
+(              |) Tj
+T*
+(              v) Tj
+T*
+(    ExpensesController.AddAttachment) Tj
+T*
+(              |) Tj
+T*
+(              v) Tj
+T*
+(    AddExpenseAttachmentUseCase) Tj
+T*
+(              |) Tj
+T*
+(              +--> valida arquivo) Tj
+ET
+endstream
+endobj
+11 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 17 0 R >> >> /Contents 12 0 R >>
+endobj
+12 0 obj
+<< /Length 1770 >>
+stream
+BT
+/F1 10 Tf
+14 TL
+1 0 0 1 50 792 Tm
+(              +--> carrega despesa do usuario logado) Tj
+T*
+(              +--> gera StorageKey) Tj
+T*
+(              +--> envia arquivo para MinIO) Tj
+T*
+(              +--> adiciona metadado em Expense.Attachments) Tj
+T*
+(              +--> commit no MySQL) Tj
+T*
+(              |) Tj
+T*
+(              v) Tj
+T*
+(    ResponseExpenseAttachment) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(COMO A ARQUITETURA ESTA HOJE) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(O que esta forte) Tj
+T*
+() Tj
+T*
+(? separacao por camadas esta boa) Tj
+T*
+(? controllers continuam finos) Tj
+T*
+(? use cases continuam sendo o centro da orquestracao) Tj
+T*
+(? persistencia esta atras de repositorios e `UnitOfWork`) Tj
+T*
+(? integracoes externas estao indo para abstracoes, nao para controller) Tj
+T*
+(? ha base real para testes e evolucao disciplinada) Tj
+T*
+() Tj
+T*
+(O que ainda esta em evolucao) Tj
+T*
+() Tj
+T*
+(? dominio ainda e mais anemico do que rico) Tj
+T*
+(? Redis ainda esta apenas preparado, sem uso funcional real) Tj
+T*
+(? fluxo de anexos existe, mas ainda e inicial) Tj
+T*
+(? ainda nao ha estrategia ativa de deploy cloud) Tj
+T*
+(? Terraform existe apenas como placeholder estrutural) Tj
+T*
+() Tj
+T*
+(SITUAÇÕES LEGADAS TRATADAS) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(Foram encontrados pipelines legados de Azure DevOps:) Tj
+T*
+() Tj
+T*
+(? `release-pipeline.yml`) Tj
+T*
+(? `sync-build-pipeline.yml`) Tj
+T*
+() Tj
+T*
+(Acao tomada:) Tj
+T*
+() Tj
+T*
+(? pipelines desativadas com `trigger: none`) Tj
+T*
+(? historico preservado) Tj
+T*
+(? comentarios adicionados para futura retomada consciente) Tj
+T*
+() Tj
+T*
+(COMANDOS OPERACIONAIS PRINCIPAIS) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(Subir stack principal:) Tj
+T*
+() Tj
+T*
+(    docker compose up -d --build api) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(Ver logs da API:) Tj
+ET
+endstream
+endobj
+13 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 17 0 R >> >> /Contents 14 0 R >>
+endobj
+14 0 obj
+<< /Length 1451 >>
+stream
+BT
+/F1 10 Tf
+14 TL
+1 0 0 1 50 792 Tm
+() Tj
+T*
+(    docker compose logs api -f) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(Ver Swagger:) Tj
+T*
+() Tj
+T*
+(    http://localhost:8080/swagger/index.html) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(Entrar no Redis:) Tj
+T*
+() Tj
+T*
+(    docker compose exec redis redis-cli) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(Parar ambiente:) Tj
+T*
+() Tj
+T*
+(    docker compose down) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(RISCOS E OBSERVACOES) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(1. Data Protection warning) Tj
+T*
+() Tj
+T*
+(O container da API avisou que as chaves de `DataProtection` nao estao persistidas fora do) Tj
+T*
+(container.) Tj
+T*
+() Tj
+T*
+(Impacto atual:) Tj
+T*
+() Tj
+T*
+(? aceitavel para desenvolvimento local) Tj
+T*
+(? deve ser tratado melhor se isso passar a importar para ambiente persistente) Tj
+T*
+() Tj
+T*
+(2. AutoMapper vulnerability warning) Tj
+T*
+() Tj
+T*
+(Ainda existe o warning:) Tj
+T*
+() Tj
+T*
+(? `NU1903` no pacote `AutoMapper`) Tj
+T*
+() Tj
+T*
+(Isso ja era conhecido antes e segue pendente de revisao.) Tj
+T*
+() Tj
+T*
+(3. API build opaco em alguns cenarios locais) Tj
+T*
+() Tj
+T*
+(Durante a sessao, houve comportamento inconsistente de `dotnet build` na `API` em alguns) Tj
+T*
+(cenarios do ambiente, sem diagnostico claro no log.) Tj
+T*
+() Tj
+T*
+(Apesar disso:) Tj
+T*
+() Tj
+T*
+(? a imagem Docker buildou) Tj
+T*
+(? a API subiu) Tj
+T*
+(? o Swagger abriu) Tj
+T*
+(? as migrations rodaram) Tj
+T*
+() Tj
+T*
+(Entao o projeto esta funcional no fluxo principal via container.) Tj
+ET
+endstream
+endobj
+15 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 17 0 R >> >> /Contents 16 0 R >>
+endobj
+16 0 obj
+<< /Length 621 >>
+stream
+BT
+/F1 10 Tf
+14 TL
+1 0 0 1 50 792 Tm
+() Tj
+T*
+(LEITURA FINAL) Tj
+T*
+() Tj
+T*
+() Tj
+T*
+(Hoje o `CashFlow` esta num ponto melhor e mais maduro do que no inicio da sessao.) Tj
+T*
+() Tj
+T*
+(Resumo direto:) Tj
+T*
+() Tj
+T*
+(? a infraestrutura local esta pronta para o desenvolvimento diario) Tj
+T*
+(? a API esta integrada ao stack local) Tj
+T*
+(? o banco e o storage estao definidos de forma coerente) Tj
+T*
+(? anexos deixaram de ser apenas ideia e viraram capacidade inicial real) Tj
+T*
+(? a direcao arquitetural do projeto foi documentada) Tj
+T*
+(? o projeto esta mais preparado para evoluir sem perder padrao) Tj
+T*
+() Tj
+ET
+endstream
+endobj
+17 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 18
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000185 00000 n 
+0000000281 00000 n 
+0000002119 00000 n 
+0000002246 00000 n 
+0000004370 00000 n 
+0000004497 00000 n 
+0000006173 00000 n 
+0000006301 00000 n 
+0000007704 00000 n 
+0000007833 00000 n 
+0000009656 00000 n 
+0000009785 00000 n 
+0000011289 00000 n 
+0000011418 00000 n 
+0000012091 00000 n 
+trailer
+<< /Size 18 /Root 1 0 R >>
+startxref
+12162
+%%EOF
