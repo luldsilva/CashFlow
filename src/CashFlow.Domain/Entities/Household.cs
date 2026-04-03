@@ -13,7 +13,10 @@ namespace CashFlow.Domain.Entities
 
         public long UserId { get; set; }
         public User User { get; set; } = default!;
+        public List<CreditCard> CreditCards { get; set; } = [];
         public List<IncomeSource> IncomeSources { get; set; } = [];
+        public List<FinancialObligation> FinancialObligations { get; set; } = [];
+        public List<MonthlyClosure> MonthlyClosures { get; set; } = [];
         public List<PlanningBucket> PlanningBuckets { get; set; } = [];
         public List<ExpenseCategory> ExpenseCategories { get; set; } = [];
     }

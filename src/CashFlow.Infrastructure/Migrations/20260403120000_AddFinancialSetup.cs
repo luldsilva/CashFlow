@@ -1,10 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using CashFlow.Infrastructure.DataAccess;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace CashFlow.Infrastructure.Migrations
 {
+    [DbContext(typeof(CashFlowDbContext))]
+    [Migration("20260403120000_AddFinancialSetup")]
     public partial class AddFinancialSetup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
