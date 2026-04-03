@@ -124,6 +124,147 @@ namespace CashFlow.Infrastructure.Migrations
                     b.ToTable("ExpenseCategories");
                 });
 
+            modelBuilder.Entity("CashFlow.Domain.Entities.CreditCard", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<byte>("ClosingDay")
+                        .HasColumnType("tinyint unsigned");
+
+                    b.Property<byte>("DueDay")
+                        .HasColumnType("tinyint unsigned");
+
+                    b.Property<long>("HouseholdId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("LastFourDigits")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("varchar(4)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HouseholdId");
+
+                    b.ToTable("CreditCards");
+                });
+
+            modelBuilder.Entity("CashFlow.Domain.Entities.CreditCardStatement", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("ClosingDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("CompetenceDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long>("CreditCardId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<decimal?>("PaidAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("PaidDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreditCardId", "CompetenceDate")
+                        .IsUnique();
+
+                    b.ToTable("CreditCardStatements");
+                });
+
+            modelBuilder.Entity("CashFlow.Domain.Entities.FinancialObligation", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("BucketCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime>("CompetenceDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long>("HouseholdId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal?>("PaidAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("PaidDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("RecurrenceType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HouseholdId", "CompetenceDate");
+
+                    b.ToTable("FinancialObligations");
+                });
+
             modelBuilder.Entity("CashFlow.Domain.Entities.Household", b =>
                 {
                     b.Property<long>("Id")
@@ -197,6 +338,55 @@ namespace CashFlow.Infrastructure.Migrations
                     b.HasIndex("HouseholdId");
 
                     b.ToTable("IncomeSources");
+                });
+
+            modelBuilder.Entity("CashFlow.Domain.Entities.MonthlyClosure", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("ClosedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("CompetenceDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<decimal>("CommittedOutflow")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("FreeToInvest")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("FreeToSpend")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long>("HouseholdId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<decimal>("PaidOutflow")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PlannedIncome")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HouseholdId", "CompetenceDate")
+                        .IsUnique();
+
+                    b.ToTable("MonthlyClosures");
                 });
 
             modelBuilder.Entity("CashFlow.Domain.Entities.PlanningBucket", b =>
@@ -281,6 +471,28 @@ namespace CashFlow.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("CashFlow.Domain.Entities.CreditCard", b =>
+                {
+                    b.HasOne("CashFlow.Domain.Entities.Household", "Household")
+                        .WithMany("CreditCards")
+                        .HasForeignKey("HouseholdId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Household");
+                });
+
+            modelBuilder.Entity("CashFlow.Domain.Entities.CreditCardStatement", b =>
+                {
+                    b.HasOne("CashFlow.Domain.Entities.CreditCard", "CreditCard")
+                        .WithMany("Statements")
+                        .HasForeignKey("CreditCardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreditCard");
+                });
+
             modelBuilder.Entity("CashFlow.Domain.Entities.ExpenseAttachment", b =>
                 {
                     b.HasOne("CashFlow.Domain.Entities.Expense", "Expense")
@@ -314,10 +526,32 @@ namespace CashFlow.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("CashFlow.Domain.Entities.FinancialObligation", b =>
+                {
+                    b.HasOne("CashFlow.Domain.Entities.Household", "Household")
+                        .WithMany("FinancialObligations")
+                        .HasForeignKey("HouseholdId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Household");
+                });
+
             modelBuilder.Entity("CashFlow.Domain.Entities.IncomeSource", b =>
                 {
                     b.HasOne("CashFlow.Domain.Entities.Household", "Household")
                         .WithMany("IncomeSources")
+                        .HasForeignKey("HouseholdId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Household");
+                });
+
+            modelBuilder.Entity("CashFlow.Domain.Entities.MonthlyClosure", b =>
+                {
+                    b.HasOne("CashFlow.Domain.Entities.Household", "Household")
+                        .WithMany("MonthlyClosures")
                         .HasForeignKey("HouseholdId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -343,9 +577,15 @@ namespace CashFlow.Infrastructure.Migrations
 
             modelBuilder.Entity("CashFlow.Domain.Entities.Household", b =>
                 {
+                    b.Navigation("CreditCards");
+
                     b.Navigation("ExpenseCategories");
 
+                    b.Navigation("FinancialObligations");
+
                     b.Navigation("IncomeSources");
+
+                    b.Navigation("MonthlyClosures");
 
                     b.Navigation("PlanningBuckets");
                 });

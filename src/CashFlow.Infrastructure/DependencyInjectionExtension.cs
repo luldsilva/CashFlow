@@ -1,8 +1,12 @@
 ﻿using Amazon.Runtime;
 using Amazon.S3;
 using CashFlow.Domain.Repositories;
+using CashFlow.Domain.Repositories.CreditCards;
+using CashFlow.Domain.Repositories.CreditCardStatements;
 using CashFlow.Domain.Repositories.Expenses;
+using CashFlow.Domain.Repositories.FinancialObligations;
 using CashFlow.Domain.Repositories.Households;
+using CashFlow.Domain.Repositories.MonthlyClosures;
 using CashFlow.Domain.Repositories.User;
 using CashFlow.Domain.Security.Cryptography;
 using CashFlow.Domain.Security.Tokens;
@@ -48,11 +52,21 @@ namespace CashFlow.Infrastructure
         private static void AddRepositories(IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ICreditCardsReadOnlyRepository, CreditCardsRepository>();
+            services.AddScoped<ICreditCardsWriteOnlyRepository, CreditCardsRepository>();
+            services.AddScoped<ICreditCardStatementsReadOnlyRepository, CreditCardStatementsRepository>();
+            services.AddScoped<ICreditCardStatementsWriteOnlyRepository, CreditCardStatementsRepository>();
             services.AddScoped<IExpensesReadOnlyRepository, ExpensesRepository>();
             services.AddScoped<IExpensesWriteOnlyrepository, ExpensesRepository>();
             services.AddScoped<IExpensesUpdateOnlyrepository, ExpensesRepository>();
+            services.AddScoped<IFinancialObligationsReadOnlyRepository, FinancialObligationsRepository>();
+            services.AddScoped<IFinancialObligationsWriteOnlyRepository, FinancialObligationsRepository>();
+            services.AddScoped<IFinancialObligationsUpdateOnlyRepository, FinancialObligationsRepository>();
             services.AddScoped<IHouseholdReadOnlyRepository, HouseholdRepository>();
             services.AddScoped<IHouseholdWriteOnlyRepository, HouseholdRepository>();
+            services.AddScoped<IMonthlyClosuresReadOnlyRepository, MonthlyClosuresRepository>();
+            services.AddScoped<IMonthlyClosuresWriteOnlyRepository, MonthlyClosuresRepository>();
+            services.AddScoped<IMonthlyClosuresUpdateOnlyRepository, MonthlyClosuresRepository>();
             services.AddScoped<IUserReadOnlyRepository, UserRepository>();
             services.AddScoped<IUserWriteOnlyRepository, UserRepository>();
         }

@@ -15,6 +15,7 @@ namespace CashFlow.Application.AutoMapper
         private void RequestToEntity()
         {
             CreateMap<RequestExpense,Expense>();
+            CreateMap<RequestFinancialObligation, FinancialObligation>();
             CreateMap<RequestRegisterUser, User>().ForMember(dest => dest.Password, config => config.Ignore());
         }
 
@@ -24,6 +25,7 @@ namespace CashFlow.Application.AutoMapper
             CreateMap<Expense, ResponseRegisteredExpense>();
             CreateMap<Expense, ResponseShortExpense>();
             CreateMap<Expense, ResponseExpense>();
+            CreateMap<FinancialObligation, ResponseFinancialObligation>();
         }
     }
 }
