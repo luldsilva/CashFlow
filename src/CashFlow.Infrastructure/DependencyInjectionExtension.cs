@@ -2,6 +2,7 @@
 using Amazon.S3;
 using CashFlow.Domain.Repositories;
 using CashFlow.Domain.Repositories.Expenses;
+using CashFlow.Domain.Repositories.Households;
 using CashFlow.Domain.Repositories.User;
 using CashFlow.Domain.Security.Cryptography;
 using CashFlow.Domain.Security.Tokens;
@@ -50,6 +51,8 @@ namespace CashFlow.Infrastructure
             services.AddScoped<IExpensesReadOnlyRepository, ExpensesRepository>();
             services.AddScoped<IExpensesWriteOnlyrepository, ExpensesRepository>();
             services.AddScoped<IExpensesUpdateOnlyrepository, ExpensesRepository>();
+            services.AddScoped<IHouseholdReadOnlyRepository, HouseholdRepository>();
+            services.AddScoped<IHouseholdWriteOnlyRepository, HouseholdRepository>();
             services.AddScoped<IUserReadOnlyRepository, UserRepository>();
             services.AddScoped<IUserWriteOnlyRepository, UserRepository>();
         }

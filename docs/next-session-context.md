@@ -45,50 +45,52 @@ Detalhes importantes:
 - validação executada com sucesso em:
   - `dotnet test tests/WebApi.Test/WebApi.Test.csproj --filter GetReportTest`
 
-### 2. Toast duplicado no fluxo com anexo continua pendente
+### 2. Toast duplicado no fluxo com anexo foi corrigido no frontend
 
-Esse ponto nao foi tratado nesta sessão.
+Esse ponto ja foi tratado no frontend depois desta sessão.
 
-O ajuste continua sendo principalmente no frontend:
+Resultado esperado agora:
 - criação da despesa com sucesso
-- anexo enviado com sucesso logo em seguida
-- hoje isso pode gerar feedback duplicado para uma única jornada do usuário
+- upload do anexo no mesmo fluxo, quando existir
+- apenas o feedback principal da jornada deve permanecer visível ao usuário
 
-Queremos:
-- manter apenas o feedback principal da criação da despesa quando o anexo fizer parte do mesmo fluxo
+Observacao:
+- nao há pendência aberta conhecida nesse ajuste de UX neste momento
 
-## Ponto 3 que ainda nao conversamos na sessão
+## Ponto 3 que foi consolidado depois desta sessão
 
 ### 3. Analise estratégica do produto
 
-Esse ponto ainda nao foi discutido nesta sessão e deve ser retomado depois do ajuste de UX do fluxo com anexo.
+Esse ponto ja foi discutido e consolidado depois desta sessão.
 
-A linha de reflexão desejada é mais de produto do que de CRUD técnico.
+A referencia principal dessa nova fase passa a ser:
+
+- [`docs/product-roadmap-context.md`](/home/lucaslisilva/projetos/CashFlow/docs/product-roadmap-context.md)
+
+A linha de reflexão confirmada e mais de produto do que de CRUD tecnico.
 
 O foco é entender melhor a dor real que o sistema precisa resolver:
 - quanto entra de renda
 - quanto sai em gastos
 - quanto da renda está comprometido
 - como organizar isso de forma útil para uma pessoa ou família
+- quanto ainda pode ser gasto no mes
+- quanto pode ser separado para investimento
 
-Perguntas que ficaram em aberto para a próxima conversa:
-- como modelar `renda` dentro do sistema
-- se essa renda será individual, familiar ou ambos
-- como representar periodicidade:
-  - diário
-  - semanal
-  - quinzenal
-  - mensal
-- como tratar gastos fixos
-- como tratar gastos variáveis
-- se faz sentido prever comportamento futuro com base em recorrência
-- quais dashboards realmente ajudam a resolver a dor do usuário
-- se existe espaço para gamificação sem perder a seriedade do produto
+Direcao consolidada:
+
+- o produto deve nascer como planejamento financeiro operacional familiar
+- o MVP pode ser mais encorpado, desde que resolva o proximo ciclo real de contas
+- deve existir onboarding financeiro
+- deve existir dashboard principal desde cedo
+- o modelo percentual deve funcionar como guia configuravel
+- investimentos entram como segunda prioridade
+- Open Finance e integracoes externas entram depois do core financeiro
 
 ## Direção sugerida para a próxima sessão
 
-1. corrigir o feedback duplicado no frontend no fluxo de criação com anexo
-2. discutir o problema central que o produto resolve
-3. definir quais informações mínimas precisam existir no domínio de `renda` e `gastos`
-4. avaliar quais visões e dashboards realmente agregam valor
-5. só depois partir para novas implementações maiores
+1. usar [`docs/product-roadmap-context.md`](/home/lucaslisilva/projetos/CashFlow/docs/product-roadmap-context.md) como base da próxima sessão
+2. começar pelo refinamento e implementacao do core de planejamento financeiro familiar
+3. definir entidades, contratos e regras de negocio do onboarding, recorrencia, buckets e dashboard
+4. alinhar backend e frontend sobre a nova experiencia principal do produto
+5. deixar investimentos como proxima camada apos consolidar o core financeiro

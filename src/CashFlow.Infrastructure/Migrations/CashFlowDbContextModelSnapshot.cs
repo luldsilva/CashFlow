@@ -95,6 +95,149 @@ namespace CashFlow.Infrastructure.Migrations
                     b.ToTable("ExpenseAttachments");
                 });
 
+            modelBuilder.Entity("CashFlow.Domain.Entities.ExpenseCategory", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("BucketCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<long>("HouseholdId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HouseholdId", "Name")
+                        .IsUnique();
+
+                    b.ToTable("ExpenseCategories");
+                });
+
+            modelBuilder.Entity("CashFlow.Domain.Entities.Household", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("HasVariableIncome")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("MembersCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<int>("PlanningModel")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PrimaryIncomeFrequency")
+                        .HasColumnType("int");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Households");
+                });
+
+            modelBuilder.Entity("CashFlow.Domain.Entities.IncomeSource", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<byte?>("ExpectedDayOfMonth")
+                        .HasColumnType("tinyint unsigned");
+
+                    b.Property<int>("Frequency")
+                        .HasColumnType("int");
+
+                    b.Property<long>("HouseholdId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsRecurring")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HouseholdId");
+
+                    b.ToTable("IncomeSources");
+                });
+
+            modelBuilder.Entity("CashFlow.Domain.Entities.PlanningBucket", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<long>("HouseholdId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<decimal>("Percentage")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HouseholdId", "Code")
+                        .IsUnique();
+
+                    b.ToTable("PlanningBuckets");
+                });
+
             modelBuilder.Entity("CashFlow.Domain.Entities.User", b =>
                 {
                     b.Property<long>("Id")
@@ -149,9 +292,62 @@ namespace CashFlow.Infrastructure.Migrations
                     b.Navigation("Expense");
                 });
 
+            modelBuilder.Entity("CashFlow.Domain.Entities.ExpenseCategory", b =>
+                {
+                    b.HasOne("CashFlow.Domain.Entities.Household", "Household")
+                        .WithMany("ExpenseCategories")
+                        .HasForeignKey("HouseholdId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Household");
+                });
+
+            modelBuilder.Entity("CashFlow.Domain.Entities.Household", b =>
+                {
+                    b.HasOne("CashFlow.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CashFlow.Domain.Entities.IncomeSource", b =>
+                {
+                    b.HasOne("CashFlow.Domain.Entities.Household", "Household")
+                        .WithMany("IncomeSources")
+                        .HasForeignKey("HouseholdId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Household");
+                });
+
+            modelBuilder.Entity("CashFlow.Domain.Entities.PlanningBucket", b =>
+                {
+                    b.HasOne("CashFlow.Domain.Entities.Household", "Household")
+                        .WithMany("PlanningBuckets")
+                        .HasForeignKey("HouseholdId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Household");
+                });
+
             modelBuilder.Entity("CashFlow.Domain.Entities.Expense", b =>
                 {
                     b.Navigation("Attachments");
+                });
+
+            modelBuilder.Entity("CashFlow.Domain.Entities.Household", b =>
+                {
+                    b.Navigation("ExpenseCategories");
+
+                    b.Navigation("IncomeSources");
+
+                    b.Navigation("PlanningBuckets");
                 });
 #pragma warning restore 612, 618
         }
