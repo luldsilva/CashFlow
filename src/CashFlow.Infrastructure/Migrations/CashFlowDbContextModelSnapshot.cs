@@ -389,6 +389,41 @@ namespace CashFlow.Infrastructure.Migrations
                     b.ToTable("MonthlyClosures");
                 });
 
+            modelBuilder.Entity("CashFlow.Domain.Entities.PasswordResetToken", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("TokenHash")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<DateTime?>("UsedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TokenHash")
+                        .IsUnique();
+
+                    b.HasIndex("UserId", "ExpiresAt");
+
+                    b.ToTable("PasswordResetTokens");
+                });
+
             modelBuilder.Entity("CashFlow.Domain.Entities.PlanningBucket", b =>
                 {
                     b.Property<long>("Id")
@@ -480,6 +515,17 @@ namespace CashFlow.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Household");
+                });
+
+            modelBuilder.Entity("CashFlow.Domain.Entities.PasswordResetToken", b =>
+                {
+                    b.HasOne("CashFlow.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CashFlow.Domain.Entities.CreditCardStatement", b =>

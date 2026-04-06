@@ -7,13 +7,17 @@ using CashFlow.Domain.Repositories.Expenses;
 using CashFlow.Domain.Repositories.FinancialObligations;
 using CashFlow.Domain.Repositories.Households;
 using CashFlow.Domain.Repositories.MonthlyClosures;
+using CashFlow.Domain.Repositories.PasswordResetTokens;
 using CashFlow.Domain.Repositories.User;
 using CashFlow.Domain.Security.Cryptography;
 using CashFlow.Domain.Security.Tokens;
+using CashFlow.Domain.Services.Email;
 using CashFlow.Domain.Services.LoggedUser;
 using CashFlow.Domain.Services.Storage;
 using CashFlow.Infrastructure.DataAccess;
+using CashFlow.Infrastructure.Email;
 using CashFlow.Infrastructure.Extensions;
+using CashFlow.Infrastructure.PasswordReset;
 using CashFlow.Infrastructure.Repositories;
 using CashFlow.Infrastructure.Security.Tokens;
 using CashFlow.Infrastructure.Storage;
@@ -34,6 +38,7 @@ namespace CashFlow.Infrastructure
             }
 
             AddToken(services, configuration);
+            AddPasswordReset(services, configuration);
             AddStorage(services, configuration);
             AddRepositories(services);
 
@@ -67,8 +72,21 @@ namespace CashFlow.Infrastructure
             services.AddScoped<IMonthlyClosuresReadOnlyRepository, MonthlyClosuresRepository>();
             services.AddScoped<IMonthlyClosuresWriteOnlyRepository, MonthlyClosuresRepository>();
             services.AddScoped<IMonthlyClosuresUpdateOnlyRepository, MonthlyClosuresRepository>();
+            services.AddScoped<IPasswordResetTokensReadOnlyRepository, PasswordResetTokensRepository>();
+            services.AddScoped<IPasswordResetTokensWriteOnlyRepository, PasswordResetTokensRepository>();
+            services.AddScoped<IPasswordResetTokensUpdateOnlyRepository, PasswordResetTokensRepository>();
             services.AddScoped<IUserReadOnlyRepository, UserRepository>();
+            services.AddScoped<IUserUpdateOnlyRepository, UserRepository>();
             services.AddScoped<IUserWriteOnlyRepository, UserRepository>();
+        }
+
+        private static void AddPasswordReset(IServiceCollection services, IConfiguration configuration)
+        {
+            var settings = configuration.GetSection("PasswordReset").Get<PasswordResetSettings>() ?? new PasswordResetSettings();
+
+            services.AddSingleton(settings);
+            services.AddSingleton<PasswordResetEmailDebugStore>();
+            services.AddScoped<IEmailSender, DevelopmentEmailSender>();
         }
 
         private static void AddStorage(IServiceCollection services, IConfiguration configuration)

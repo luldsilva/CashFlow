@@ -22,6 +22,9 @@ using CashFlow.Application.UseCases.FinancialSetup.Upsert;
 using CashFlow.Application.UseCases.Login.DoLogin;
 using CashFlow.Application.UseCases.MonthlyReview.Close;
 using CashFlow.Application.UseCases.MonthlyReview.Get;
+using CashFlow.Application.UseCases.Users.ChangePassword;
+using CashFlow.Application.UseCases.Users.ForgotPassword;
+using CashFlow.Application.UseCases.Users.ResetPassword;
 using CashFlow.Application.UseCases.Users.Register;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -64,6 +67,9 @@ namespace CashFlow.Application
             services.AddScoped<IDeleteFinancialObligationUseCase, DeleteFinancialObligationUseCase>();
             services.AddScoped<IGetFinancialSetupUseCase, GetFinancialSetupUseCase>();
             services.AddScoped<IUpsertFinancialSetupUseCase, UpsertFinancialSetupUseCase>();
+            services.AddScoped<IChangePasswordUseCase, ChangePasswordUseCase>();
+            services.AddScoped<IForgotPasswordUseCase, ForgotPasswordUseCase>();
+            services.AddScoped<IResetPasswordUseCase, ResetPasswordUseCase>();
             services.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
             services.AddScoped<IDoLoginUseCase, DoLoginUseCase>();
         }

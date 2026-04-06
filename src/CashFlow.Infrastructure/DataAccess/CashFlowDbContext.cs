@@ -15,6 +15,7 @@ namespace CashFlow.Infrastructure.DataAccess
         public DbSet<Household> Households { get; set; }
         public DbSet<IncomeSource> IncomeSources { get; set; }
         public DbSet<MonthlyClosure> MonthlyClosures { get; set; }
+        public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
         public DbSet<PlanningBucket> PlanningBuckets { get; set; }
         public DbSet<User> Users { get; set; }
 
@@ -129,6 +130,13 @@ namespace CashFlow.Infrastructure.DataAccess
                 entity.Property(closure => closure.FreeToInvest).HasPrecision(18, 2);
                 entity.Property(closure => closure.Notes).HasMaxLength(1000);
                 entity.HasIndex(closure => new { closure.HouseholdId, closure.CompetenceDate }).IsUnique();
+            });
+
+            modelBuilder.Entity<PasswordResetToken>(entity =>
+            {
+                entity.Property(token => token.TokenHash).HasMaxLength(128);
+                entity.HasIndex(token => token.TokenHash).IsUnique();
+                entity.HasIndex(token => new { token.UserId, token.ExpiresAt });
             });
         }
     }
