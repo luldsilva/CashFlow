@@ -24,7 +24,7 @@ namespace CashFlow.Application.UseCases.Expenses.Reports.Excel
         {
             var loggedUser = await _loggedUser.Get();
 
-            var expenses = await _repository.FilterByMonth(month);
+            var expenses = await _repository.FilterByMonth(loggedUser, month);
 
             if(expenses.Count == 0)
             {
@@ -48,11 +48,12 @@ namespace CashFlow.Application.UseCases.Expenses.Reports.Excel
                 worksheet.Cell($"A{raw}").Value = expense.Title;
                 worksheet.Cell($"B{raw}").Value = expense.Date;
                 worksheet.Cell($"C{raw}").Value = expense.PaymentType.PaymentTypeToString();
+                worksheet.Cell($"D{raw}").Value = expense.ExpenseCategory?.Name ?? string.Empty;
 
-                worksheet.Cell($"D{raw}").Value = expense.Amount;
-                worksheet.Cell($"D{raw}").Style.NumberFormat.Format = $"-{CURRENCY_SYMBOL} #,##0.00";
+                worksheet.Cell($"E{raw}").Value = expense.Amount;
+                worksheet.Cell($"E{raw}").Style.NumberFormat.Format = $"-{CURRENCY_SYMBOL} #,##0.00";
 
-                worksheet.Cell($"E{raw}").Value = expense.Description;
+                worksheet.Cell($"F{raw}").Value = expense.Description;
 
                 raw++;
             }
@@ -70,14 +71,15 @@ namespace CashFlow.Application.UseCases.Expenses.Reports.Excel
             worksheet.Cell("A1").Value = ResourceReportGenerationMessages.TITLE;
             worksheet.Cell("B1").Value = ResourceReportGenerationMessages.DATE;
             worksheet.Cell("C1").Value = ResourceReportGenerationMessages.PAYMENT_TYPE;
-            worksheet.Cell("D1").Value = ResourceReportGenerationMessages.AMOUNT;
-            worksheet.Cell("E1").Value = ResourceReportGenerationMessages.DESCRIPTION; 
+            worksheet.Cell("D1").Value = "Categoria";
+            worksheet.Cell("E1").Value = ResourceReportGenerationMessages.AMOUNT;
+            worksheet.Cell("F1").Value = ResourceReportGenerationMessages.DESCRIPTION; 
 
-            worksheet.Cells("A1:E1").Style.Font.Bold = true;
+            worksheet.Cells("A1:F1").Style.Font.Bold = true;
 
-            worksheet.Cells("A1:E1").Style.Fill.BackgroundColor = XLColor.FromHtml("#F5C2B6");
+            worksheet.Cells("A1:F1").Style.Fill.BackgroundColor = XLColor.FromHtml("#F5C2B6");
 
-            worksheet.Cells("A1:E1").Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+            worksheet.Cells("A1:F1").Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
         }
     }
 }

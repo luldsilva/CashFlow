@@ -1,4 +1,5 @@
 using AutoMapper;
+using CashFlow.Application.UseCases.FinancialObligations.Resolve;
 using CashFlow.Communication.Requests;
 using CashFlow.Communication.Responses;
 using CashFlow.Domain.Entities;
@@ -47,6 +48,14 @@ namespace CashFlow.Application.UseCases.FinancialObligations.Register
             var obligation = _mapper.Map<FinancialObligation>(request);
             obligation.HouseholdId = household.Id;
             obligation.CompetenceDate = NormalizeCompetenceDate(request.CompetenceDate);
+            obligation.Title = obligation.Title.Trim();
+            obligation.Description = string.IsNullOrWhiteSpace(obligation.Description) ? null : obligation.Description.Trim();
+            obligation.BucketCode = request.BucketCode?.Trim() ?? string.Empty;
+
+            var category = FinancialObligationCategoryResolver.ResolveOptional(household, request);
+            obligation.ExpenseCategoryId = category?.Id;
+            obligation.ExpenseCategory = category;
+            obligation.CategoryName = category?.Name ?? obligation.CategoryName.Trim();
 
             await _repository.Add(obligation);
             await _unitOfWork.Commit();

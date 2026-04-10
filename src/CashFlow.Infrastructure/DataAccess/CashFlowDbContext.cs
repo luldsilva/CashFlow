@@ -29,6 +29,10 @@ namespace CashFlow.Infrastructure.DataAccess
                     .WithOne(attachment => attachment.Expense)
                     .HasForeignKey(attachment => attachment.ExpenseId)
                     .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(expense => expense.ExpenseCategory)
+                    .WithMany(category => category.Expenses)
+                    .HasForeignKey(expense => expense.ExpenseCategoryId)
+                    .OnDelete(DeleteBehavior.SetNull);
             });
 
             modelBuilder.Entity<ExpenseAttachment>(entity =>
@@ -106,7 +110,7 @@ namespace CashFlow.Infrastructure.DataAccess
             modelBuilder.Entity<ExpenseCategory>(entity =>
             {
                 entity.Property(category => category.Name).HasMaxLength(100);
-                entity.Property(category => category.BucketCode).HasMaxLength(50);
+                entity.Property(category => category.BucketCode).HasMaxLength(50).IsRequired(false);
                 entity.HasIndex(category => new { category.HouseholdId, category.Name }).IsUnique();
             });
 
@@ -119,6 +123,10 @@ namespace CashFlow.Infrastructure.DataAccess
                 entity.Property(obligation => obligation.Amount).HasPrecision(18, 2);
                 entity.Property(obligation => obligation.PaidAmount).HasPrecision(18, 2);
                 entity.HasIndex(obligation => new { obligation.HouseholdId, obligation.CompetenceDate });
+                entity.HasOne(obligation => obligation.ExpenseCategory)
+                    .WithMany(category => category.FinancialObligations)
+                    .HasForeignKey(obligation => obligation.ExpenseCategoryId)
+                    .OnDelete(DeleteBehavior.SetNull);
             });
 
             modelBuilder.Entity<MonthlyClosure>(entity =>

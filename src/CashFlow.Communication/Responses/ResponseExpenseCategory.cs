@@ -4,6 +4,7 @@ namespace CashFlow.Communication.Responses
     {
         public long Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public string BucketCode { get; set; } = string.Empty;
+        public string? BucketName { get; set; }
+        public string? BucketCode { get; set; }
     }
 }

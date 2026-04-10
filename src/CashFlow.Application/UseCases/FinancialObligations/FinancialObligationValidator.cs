@@ -16,9 +16,10 @@ namespace CashFlow.Application.UseCases.FinancialObligations
                 .NotEmpty()
                 .WithMessage("Financial obligation category is required.");
 
-            RuleFor(request => request.BucketCode)
-                .NotEmpty()
-                .WithMessage("Financial obligation bucket code is required.");
+            RuleFor(request => request.CategoryId)
+                .GreaterThan(0)
+                .When(request => request.CategoryId.HasValue)
+                .WithMessage("Financial obligation category id must be greater than zero.");
 
             RuleFor(request => request.Amount)
                 .GreaterThan(0)

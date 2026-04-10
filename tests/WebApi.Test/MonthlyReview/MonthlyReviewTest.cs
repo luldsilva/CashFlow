@@ -53,11 +53,54 @@ namespace WebApi.Test.MonthlyReview
                 .Should().Be(closeRequest.Notes);
         }
 
+        [Fact]
+        public async Task Prepare_Should_Copy_Recurring_Obligations_To_Target_Month()
+        {
+            await Authenticate();
+            await EnsureFinancialSetup();
+
+            var obligation = RequestFinancialObligationBuilder.Build();
+            obligation.Title = "Aluguel";
+            obligation.CategoryName = "Moradia";
+            obligation.CompetenceDate = new DateTime(2026, 12, 1);
+            obligation.DueDate = new DateTime(2026, 12, 10);
+            obligation.RecurrenceType = FinancialObligationRecurrenceType.FixedMonthly;
+            obligation.Status = FinancialObligationStatus.Expected;
+
+            var obligationResponse = await _httpClient.PostAsJsonAsync("api/financial-obligations", obligation);
+            obligationResponse.StatusCode.Should().Be(HttpStatusCode.Created);
+
+            var prepareRequest = new RequestPrepareMonth
+            {
+                TargetCompetenceDate = new DateTime(2027, 1, 1),
+                SourceCompetenceDate = new DateTime(2026, 12, 1)
+            };
+
+            var prepareResponse = await _httpClient.PostAsJsonAsync("api/monthly-review/prepare", prepareRequest);
+            prepareResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            var listResponse = await _httpClient.GetAsync("api/financial-obligations?month=2027-01-01");
+            listResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            var responseBody = await listResponse.Content.ReadAsStreamAsync();
+            var responseData = await JsonDocument.ParseAsync(responseBody);
+            var obligations = responseData.RootElement.GetProperty("obligations").EnumerateArray().ToList();
+            var clonedObligation = obligations.Single(item => item.GetProperty("title").GetString() == "Aluguel");
+            clonedObligation.GetProperty("status").GetString().Should().Be("Expected");
+        }
+
         private async Task EnsureFinancialSetup()
         {
             var request = RequestUpsertFinancialSetupBuilder.Build();
-            var response = await _httpClient.PutAsJsonAsync("api/financial-setup", request);
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var response = await _httpClient.PostAsJsonAsync("api/financial-setup", request);
+            if (response.StatusCode == HttpStatusCode.Conflict)
+            {
+                var updateResponse = await _httpClient.PutAsJsonAsync("api/financial-setup", request);
+                updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+                return;
+            }
+
+            response.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
         private async Task Authenticate()

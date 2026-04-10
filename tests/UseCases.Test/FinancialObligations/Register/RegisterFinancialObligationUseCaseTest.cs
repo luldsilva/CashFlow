@@ -9,6 +9,7 @@ using CashFlow.Domain.Services.LoggedUser;
 using CashFlow.Exception.ExceptionsBase;
 using CommonTestUtilities.Requests;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 
 namespace UseCases.Test.FinancialObligations.Register
@@ -68,7 +69,9 @@ namespace UseCases.Test.FinancialObligations.Register
             IFinancialObligationsWriteOnlyRepository? repository = null,
             IHouseholdReadOnlyRepository? householdRepository = null)
         {
-            var mapper = new MapperConfiguration(configuration => configuration.AddProfile(new AutoMapping())).CreateMapper();
+            var mapper = new MapperConfiguration(
+                configuration => configuration.AddProfile(new AutoMapping()),
+                NullLoggerFactory.Instance).CreateMapper();
 
             var loggedUser = new Mock<ILoggedUser>();
             loggedUser.Setup(service => service.Get()).ReturnsAsync(new User { Id = 10 });

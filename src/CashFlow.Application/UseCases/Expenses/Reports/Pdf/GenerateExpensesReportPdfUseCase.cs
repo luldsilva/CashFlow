@@ -32,7 +32,7 @@ namespace CashFlow.Application.UseCases.Expenses.Reports.Pdf
         {
             var loggedUser = await _loggedUser.Get();
 
-            var expenses = await _repository.FilterByMonth(month);
+            var expenses = await _repository.FilterByMonth(loggedUser, month);
 
             if(expenses.Count == 0)
             {
@@ -73,6 +73,12 @@ namespace CashFlow.Application.UseCases.Expenses.Reports.Pdf
 
                 row.Cells[2].AddParagraph(expense.PaymentType.PaymentTypeToString());
                 SetStyleBaseForExpenseInformation(row.Cells[2]);
+
+                var categoryName = expense.ExpenseCategory?.Name;
+                if (!string.IsNullOrWhiteSpace(categoryName))
+                {
+                    row.Cells[2].AddParagraph($"Categoria: {categoryName}");
+                }
 
                 AddAmountForExpense(row.Cells[3], expense.Amount);
 

@@ -8,6 +8,8 @@ namespace CashFlow.Domain.Entities
         public string Title { get; set; } = string.Empty;
         public string? Description { get; set; }
         public string CategoryName { get; set; } = string.Empty;
+        public long? ExpenseCategoryId { get; set; }
+        public ExpenseCategory? ExpenseCategory { get; set; }
         public string BucketCode { get; set; } = string.Empty;
         public decimal Amount { get; set; }
         public decimal? PaidAmount { get; set; }

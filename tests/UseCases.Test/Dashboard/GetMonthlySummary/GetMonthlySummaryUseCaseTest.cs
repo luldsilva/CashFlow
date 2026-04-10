@@ -1,8 +1,10 @@
 using CashFlow.Application.UseCases.Dashboard.GetMonthlySummary;
 using CashFlow.Domain.Entities;
 using CashFlow.Domain.Enums;
+using CashFlow.Domain.Repositories.CreditCardStatements;
 using CashFlow.Domain.Repositories.FinancialObligations;
 using CashFlow.Domain.Repositories.Households;
+using CashFlow.Domain.Repositories.MonthlyClosures;
 using CashFlow.Domain.Services.LoggedUser;
 using CashFlow.Exception.ExceptionsBase;
 using FluentAssertions;
@@ -98,6 +100,10 @@ namespace UseCases.Test.Dashboard.GetMonthlySummary
             var useCase = new GetMonthlySummaryUseCase(
                 householdRepository.Object,
                 Mock.Of<IFinancialObligationsReadOnlyRepository>(),
+                Mock.Of<ICreditCardStatementsReadOnlyRepository>(repository =>
+                    repository.GetByMonth(It.IsAny<long>(), It.IsAny<DateTime>()) == Task.FromResult(new List<CreditCardStatement>())),
+                Mock.Of<IMonthlyClosuresReadOnlyRepository>(repository =>
+                    repository.GetByMonth(It.IsAny<long>(), It.IsAny<DateTime>()) == Task.FromResult<MonthlyClosure?>(null)),
                 loggedUser.Object);
 
             var act = async () => await useCase.Execute(new DateTime(2026, 4, 1));
@@ -124,6 +130,10 @@ namespace UseCases.Test.Dashboard.GetMonthlySummary
             return new GetMonthlySummaryUseCase(
                 householdRepository.Object,
                 obligationsRepository.Object,
+                Mock.Of<ICreditCardStatementsReadOnlyRepository>(repository =>
+                    repository.GetByMonth(It.IsAny<long>(), It.IsAny<DateTime>()) == Task.FromResult(new List<CreditCardStatement>())),
+                Mock.Of<IMonthlyClosuresReadOnlyRepository>(repository =>
+                    repository.GetByMonth(It.IsAny<long>(), It.IsAny<DateTime>()) == Task.FromResult<MonthlyClosure?>(null)),
                 loggedUser.Object);
         }
     }

@@ -14,5 +14,6 @@ namespace CashFlow.Communication.Responses
         public decimal? PaidAmount { get; set; }
         public DateTime? PaidDate { get; set; }
         public CreditCardStatementStatus Status { get; set; }
+        public bool RequiresReview { get; set; }
     }
 }

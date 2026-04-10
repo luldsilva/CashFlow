@@ -6,6 +6,13 @@ Registrar de forma consolidada a direcao de produto alinhada para a proxima fase
 
 Este documento substitui a ambiguidade de um MVP "minimo demais". A decisao atual e construir um `MVP mais encorpado`, com foco direto em resolver o problema real do usuario no proximo ciclo mensal de contas.
 
+O entendimento mais recente do produto refinou essa direcao:
+
+- o onboarding deve ser mais curto e mais util desde o primeiro passo
+- renda e obrigacoes entram antes da configuracao completa de buckets
+- a distribuicao por buckets acontece depois da leitura do comprometimento
+- a virada de mes deve reaproveitar base fixa sem apagar o historico do ciclo anterior
+
 ## Problema central que o produto precisa resolver
 
 O problema principal nao e simplesmente registrar despesas.
@@ -57,7 +64,7 @@ Ele deve combinar:
 
 - controle financeiro do mes
 - previsao de compromissos
-- orientacao por modelo financeiro
+- orientacao por modelo financeiro em momento apropriado
 - visao de saldo livre
 - preparacao para aporte mensal
 
@@ -83,10 +90,11 @@ O objetivo e entregar um `MVP utilizavel no proximo ciclo de contas real`, com m
 
 Esse MVP deve nascer com:
 
-- fluxo de configuracao inicial
+- fluxo de configuracao inicial simples
 - modelagem de renda
 - modelagem de contas fixas e recorrentes
-- classificacao por grupos de planejamento
+- leitura de comprometimento do mes
+- classificacao por grupos de planejamento em segunda etapa do onboarding
 - visao mensal consolidada
 - dashboard principal
 - base para investimentos
@@ -166,6 +174,8 @@ Recorrencia deve existir para:
 - assinaturas
 - aportes planejados
 
+Isso implica que a virada de mes deve reaproveitar automaticamente a base reaplicavel do ciclo anterior.
+
 ### 4. Despesas variaveis recorrentes devem permitir previsao
 
 Exemplo:
@@ -197,6 +207,8 @@ A conta de visao deve considerar:
 - entradas provaveis
 - saidas pagas
 - obrigacoes futuras do mesmo ciclo
+
+Essa leitura de comprometimento deve aparecer antes da configuracao completa do modelo percentual.
 
 ### 7. O modelo percentual e um guia, nao uma prisao
 
@@ -256,6 +268,10 @@ Buckets iniciais mais provaveis:
 
 Nem todos precisam estar ativos por padrao.
 
+Na experiencia inicial, o produto nao deve expor todos esses buckets de uma vez.
+
+O recomendado e começar com poucos buckets sugeridos, em linguagem simples, e expandir a customizacao depois.
+
 ## Comportamento esperado do modelo percentual
 
 O sistema deve:
@@ -271,15 +287,33 @@ O sistema deve:
 O onboarding sugerido para a nova fase deve seguir esta linha:
 
 1. identificar composicao familiar
-2. entender a renda media e se ela oscila
-3. configurar periodicidade principal da renda
-4. escolher um modelo de planejamento inicial
-5. ajustar os percentuais sugeridos
-6. cadastrar fontes de renda
-7. cadastrar contas fixas e recorrentes
-8. configurar cartoes e vencimentos
-9. revisar resumo inicial do mes
-10. entrar no dashboard principal
+2. identificar quantas rendas existem e se elas sao fixas ou variaveis
+3. cadastrar fontes de renda e valores esperados
+4. cadastrar contas fixas e recorrentes do mes
+5. registrar cartao e/ou fatura atual quando fizer sentido
+6. calcular o percentual da renda ja comprometido
+7. distribuir apenas o valor restante em poucos buckets sugeridos
+8. revisar o resumo inicial do mes
+9. entrar no dashboard principal
+
+Observacao importante:
+
+- buckets, percentuais e modelo de planejamento deixam de ser a porta de entrada do fluxo
+- eles passam a ser uma etapa posterior, guiada pelo valor que restou apos o comprometimento inicial
+
+## Virada de mes e continuidade operacional
+
+Foi alinhado que o produto deve funcionar bem nao apenas no onboarding, mas tambem no inicio de cada novo ciclo.
+
+Na virada de mes, o sistema deve:
+
+- sugerir ao usuario a abertura do novo mes
+- reaproveitar renda fixa e contas fixas
+- copiar contas variaveis recorrentes com aviso para revisao
+- permitir ajuste do novo mes antes ou depois do fechamento do mes anterior
+- preservar uma foto consolidada do mes fechado para historico, relatorio e comparacao
+
+O comportamento esperado nao e recadastrar tudo, mas revisar uma base herdada com seguranca.
 
 ## Dashboard principal
 
@@ -308,12 +342,11 @@ Blocos secundarios:
 
 ### Fase 1A. Estrutura de planejamento financeiro
 
-- onboarding de configuracao financeira
+- onboarding de configuracao financeira simples
 - household e composicao familiar
 - fontes de renda
 - renda recorrente e renda eventual
-- buckets percentuais
-- categorias principais
+- abertura do mes operacional inicial
 
 ### Fase 1B. Motor de compromissos do mes
 
@@ -322,6 +355,7 @@ Blocos secundarios:
 - obrigacoes com vencimento
 - competencia mensal
 - status de previsto, pago e ajustado
+- leitura de comprometimento inicial da renda
 
 ### Fase 1C. Dashboard e operacao do mes
 
@@ -330,6 +364,7 @@ Blocos secundarios:
 - saldo comprometido
 - lista de vencimentos
 - leitura por bucket
+- distribuicao guiada do restante entre buckets
 
 ### Fase 1D. Cartao de credito
 
@@ -345,6 +380,7 @@ Blocos secundarios:
 - comparativo planejado x realizado
 - ajustes de modelo
 - reaproveitamento de configuracao para o mes seguinte
+- virada assistida de ciclo com snapshot preservado
 
 ## Funcionalidades da fase 2: investimentos
 
@@ -438,6 +474,7 @@ Divida interna inclui:
 - criar onboarding inicial
 - criar dashboard principal
 - permitir operacao do mes sem depender de caderno
+- permitir virada de mes sem recadastro completo
 
 ### Etapa 2. Profundidade operacional
 
@@ -468,13 +505,13 @@ Divida interna inclui:
 ## Ordem recomendada de implementacao a partir de amanha
 
 1. consolidar regras de negocio do core financeiro
-2. desenhar as entidades e contratos principais
-3. definir o onboarding inicial
-4. definir o dashboard principal
-5. implementar o motor de planejamento mensal
-6. implementar recorrencia e obrigacoes
-7. implementar buckets percentuais
-8. adicionar cartao de credito
+2. separar setup estrutural de operacao mensal
+3. redefinir o onboarding inicial em duas etapas
+4. implementar o motor de comprometimento mensal
+5. implementar recorrencia e reaproveitamento de mes
+6. implementar buckets percentuais sobre o restante
+7. fortalecer cartao de credito dentro do fluxo mensal
+8. consolidar dashboard e fechamento
 9. preparar base de investimentos
 10. deixar integracoes externas para depois
 
@@ -492,10 +529,12 @@ Objetivo de curto prazo:
 O frontend precisa ter ciencia de que a aplicacao vai evoluir de um fluxo simples de CRUD de despesas para uma experiencia orientada por:
 
 - onboarding financeiro
+- onboarding em passos curtos e didaticos
 - dashboard principal forte
-- planejamento por percentuais
+- planejamento por percentuais em etapa posterior ao cadastro das contas
 - visao de saldo livre
 - compromissos mensais
+- virada de mes assistida
 - investimento como segunda camada do produto
 
 ## Observacao final

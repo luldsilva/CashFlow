@@ -1,11 +1,11 @@
 using CashFlow.Communication.Requests;
 using FluentValidation;
 
-namespace CashFlow.Application.UseCases.FinancialSetup.Upsert
+namespace CashFlow.Application.UseCases.FinancialSetup
 {
-    public class UpsertFinancialSetupValidator : AbstractValidator<RequestUpsertFinancialSetup>
+    public class FinancialSetupRequestValidator : AbstractValidator<RequestUpsertFinancialSetup>
     {
-        public UpsertFinancialSetupValidator()
+        public FinancialSetupRequestValidator()
         {
             RuleFor(request => request.HouseholdName)
                 .NotEmpty()
@@ -22,23 +22,15 @@ namespace CashFlow.Application.UseCases.FinancialSetup.Upsert
             RuleForEach(request => request.IncomeSources)
                 .SetValidator(new IncomeSourceValidator());
 
-            RuleFor(request => request.PlanningBuckets)
-                .NotEmpty()
-                .WithMessage("At least one planning bucket is required.");
-
             RuleForEach(request => request.PlanningBuckets)
                 .SetValidator(new PlanningBucketValidator());
-
-            RuleFor(request => request.ExpenseCategories)
-                .NotEmpty()
-                .WithMessage("At least one expense category is required.");
 
             RuleForEach(request => request.ExpenseCategories)
                 .SetValidator(new ExpenseCategoryValidator());
 
             RuleFor(request => request.PlanningBuckets)
-                .Must(HaveUniqueBucketCodes)
-                .WithMessage("Planning buckets must have unique codes.");
+                .Must(HaveUniqueBucketNames)
+                .WithMessage("Planning buckets must have unique names.");
 
             RuleFor(request => request.ExpenseCategories)
                 .Must(HaveUniqueCategoryNames)
@@ -53,10 +45,10 @@ namespace CashFlow.Application.UseCases.FinancialSetup.Upsert
                 .WithMessage("Expense categories must reference an existing planning bucket.");
         }
 
-        private static bool HaveUniqueBucketCodes(List<RequestPlanningBucket> buckets)
+        private static bool HaveUniqueBucketNames(List<RequestPlanningBucket> buckets)
         {
             return buckets
-                .Select(bucket => bucket.Code.Trim().ToLowerInvariant())
+                .Select(bucket => bucket.Name.Trim().ToLowerInvariant())
                 .Distinct()
                 .Count() == buckets.Count;
         }
@@ -71,6 +63,11 @@ namespace CashFlow.Application.UseCases.FinancialSetup.Upsert
 
         private static bool HaveValidBucketAllocation(RequestUpsertFinancialSetup request)
         {
+            if (request.PlanningBuckets.Count == 0)
+            {
+                return true;
+            }
+
             var activeBucketTotal = request.PlanningBuckets
                 .Where(bucket => bucket.IsActive)
                 .Sum(bucket => bucket.Percentage);
@@ -80,12 +77,18 @@ namespace CashFlow.Application.UseCases.FinancialSetup.Upsert
 
         private static bool HaveCategoriesMappedToExistingBuckets(RequestUpsertFinancialSetup request)
         {
-            var bucketCodes = request.PlanningBuckets
-                .Select(bucket => bucket.Code.Trim().ToLowerInvariant())
+            if (request.ExpenseCategories.Count == 0)
+            {
+                return true;
+            }
+
+            var bucketNames = request.PlanningBuckets
+                .Select(bucket => bucket.Name.Trim().ToLowerInvariant())
                 .ToHashSet();
 
             return request.ExpenseCategories
-                .All(category => bucketCodes.Contains(category.BucketCode.Trim().ToLowerInvariant()));
+                .Where(category => !string.IsNullOrWhiteSpace(category.BucketName))
+                .All(category => bucketNames.Contains(category.BucketName!.Trim().ToLowerInvariant()));
         }
 
         private sealed class IncomeSourceValidator : AbstractValidator<RequestIncomeSource>
@@ -111,10 +114,6 @@ namespace CashFlow.Application.UseCases.FinancialSetup.Upsert
         {
             public PlanningBucketValidator()
             {
-                RuleFor(bucket => bucket.Code)
-                    .NotEmpty()
-                    .WithMessage("Planning bucket code is required.");
-
                 RuleFor(bucket => bucket.Name)
                     .NotEmpty()
                     .WithMessage("Planning bucket name is required.");
@@ -136,10 +135,21 @@ namespace CashFlow.Application.UseCases.FinancialSetup.Upsert
                 RuleFor(category => category.Name)
                     .NotEmpty()
                     .WithMessage("Expense category name is required.");
+            }
+        }
+    }
 
-                RuleFor(category => category.BucketCode)
-                    .NotEmpty()
-                    .WithMessage("Expense category bucket code is required.");
+    public static class FinancialSetupValidator
+    {
+        public static void Validate(RequestUpsertFinancialSetup request)
+        {
+            var validator = new FinancialSetupRequestValidator();
+            var result = validator.Validate(request);
+
+            if (!result.IsValid)
+            {
+                throw new CashFlow.Exception.ExceptionsBase.ErrorOnValidationException(
+                    result.Errors.Select(error => error.ErrorMessage).ToList());
             }
         }
     }

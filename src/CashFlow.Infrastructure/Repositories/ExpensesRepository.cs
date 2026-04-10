@@ -34,6 +34,7 @@ namespace CashFlow.Infrastructure.Repositories
             //So deve ser usado caso tenhamos certeza de que quem usa o getAll nao deve alterar os seus dados.
             return await _dbContext.Expenses
                 .AsNoTracking()
+                .Include(expense => expense.ExpenseCategory)
                 .Where(e => e.UserId == user.Id)
                 .ToListAsync();
         }
@@ -43,6 +44,7 @@ namespace CashFlow.Infrastructure.Repositories
             return await _dbContext.Expenses
                 .AsNoTracking()
                 .Include(expense => expense.Attachments)
+                .Include(expense => expense.ExpenseCategory)
                 .FirstOrDefaultAsync(e => e.Id == id && e.UserId == user.Id);
         }
 
@@ -50,6 +52,7 @@ namespace CashFlow.Infrastructure.Repositories
         {
             return await _dbContext.Expenses
                 .Include(expense => expense.Attachments)
+                .Include(expense => expense.ExpenseCategory)
                 .FirstOrDefaultAsync(e => e.Id == id && e.UserId == user.Id);
         }
 
@@ -58,7 +61,7 @@ namespace CashFlow.Infrastructure.Repositories
             _dbContext.Expenses.Update(expense);
         }
 
-        public async Task<List<Expense>> FilterByMonth(DateOnly date)
+        public async Task<List<Expense>> FilterByMonth(User user, DateOnly date)
         {
             var startDate = new DateTime(year: date.Year, month: date.Month, day: 1).Date;
 
@@ -68,10 +71,18 @@ namespace CashFlow.Infrastructure.Repositories
 
             return await _dbContext.Expenses
                 .AsNoTracking()
-                .Where(e => e.Date > startDate && e.Date <= endDate)
+                .Include(expense => expense.ExpenseCategory)
+                .Where(e => e.UserId == user.Id && e.Date > startDate && e.Date <= endDate)
                 .OrderBy(e => e.Date)
                 .ThenBy(e => e.Title)
                 .ToListAsync();
+        }
+
+        public async Task<bool> ExistsByCategory(long userId, long categoryId)
+        {
+            return await _dbContext.Expenses
+                .AsNoTracking()
+                .AnyAsync(expense => expense.UserId == userId && expense.ExpenseCategoryId == categoryId);
         }
     }
 }

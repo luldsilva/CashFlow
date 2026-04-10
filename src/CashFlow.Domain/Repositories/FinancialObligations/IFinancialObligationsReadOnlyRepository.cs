@@ -6,5 +6,6 @@ namespace CashFlow.Domain.Repositories.FinancialObligations
     {
         Task<List<FinancialObligation>> GetAllByCompetence(long householdId, DateTime competenceDate);
         Task<FinancialObligation?> GetById(long householdId, long id);
+        Task<bool> ExistsByCategory(long householdId, long categoryId);
     }
 }

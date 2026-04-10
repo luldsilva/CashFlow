@@ -38,7 +38,6 @@ namespace CommonTestUtilities.Requests
                 [
                     new RequestPlanningBucket
                     {
-                        Code = "essentials",
                         Name = "Essenciais",
                         Percentage = 50m,
                         IsActive = true,
@@ -46,7 +45,6 @@ namespace CommonTestUtilities.Requests
                     },
                     new RequestPlanningBucket
                     {
-                        Code = "investments",
                         Name = "Investimentos",
                         Percentage = 20m,
                         IsActive = true,
@@ -54,7 +52,6 @@ namespace CommonTestUtilities.Requests
                     },
                     new RequestPlanningBucket
                     {
-                        Code = "free",
                         Name = "Livre",
                         Percentage = 30m,
                         IsActive = true,
@@ -66,17 +63,17 @@ namespace CommonTestUtilities.Requests
                     new RequestExpenseCategory
                     {
                         Name = "Aluguel",
-                        BucketCode = "essentials"
+                        BucketName = "Essenciais"
                     },
                     new RequestExpenseCategory
                     {
                         Name = "Mercado",
-                        BucketCode = "essentials"
+                        BucketName = "Essenciais"
                     },
                     new RequestExpenseCategory
                     {
                         Name = "Corretora",
-                        BucketCode = "investments"
+                        BucketName = "Investimentos"
                     }
                 ]
             };

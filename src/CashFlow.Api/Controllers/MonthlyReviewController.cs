@@ -1,5 +1,6 @@
 using CashFlow.Application.UseCases.MonthlyReview.Close;
 using CashFlow.Application.UseCases.MonthlyReview.Get;
+using CashFlow.Application.UseCases.MonthlyReview.Prepare;
 using CashFlow.Communication.Requests;
 using CashFlow.Communication.Responses;
 using Microsoft.AspNetCore.Authorization;
@@ -18,6 +19,17 @@ namespace CashFlow.Api.Controllers
         public async Task<IActionResult> Close(
             [FromBody] RequestCloseMonth request,
             [FromServices] ICloseMonthUseCase useCase)
+        {
+            var response = await useCase.Execute(request);
+            return Ok(response);
+        }
+
+        [HttpPost("prepare")]
+        [ProducesResponseType(typeof(ResponsePreparedMonth), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Prepare(
+            [FromBody] RequestPrepareMonth request,
+            [FromServices] IPrepareMonthUseCase useCase)
         {
             var response = await useCase.Execute(request);
             return Ok(response);

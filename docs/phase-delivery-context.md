@@ -23,30 +23,25 @@ Em termos de produto, essa entrega cria a base do onboarding financeiro:
 - informar a composicao familiar
 - indicar se a renda e mais estavel ou variavel
 - definir a frequencia principal de entrada de dinheiro
-- escolher um modelo inicial de planejamento
-- configurar a estrutura base que vai orientar a organizacao financeira
+- cadastrar as fontes de renda iniciais
+- abrir o ciclo mensal com o minimo de friccao
 
-Tambem entram, nessa fase:
-
-- cadastro das fontes de renda iniciais
-- configuracao dos buckets percentuais
-- definicao das categorias principais de gasto
-
-Na pratica, isso faz o produto deixar de ser apenas um cadastro solto de despesas e passar a entender como aquela familia organiza o dinheiro.
+Na pratica, essa fase deixa o produto pronto para sair do perfil de cadastro solto e ir para a operacao financeira real do mes.
 
 ### O que essa fase habilita
 
 - iniciar o onboarding financeiro com dados estruturais reais
 - salvar a configuracao base da familia
-- escolher um modelo inicial de planejamento financeiro
-- preparar a classificacao futura de gastos e leitura por buckets
-- criar a fundacao necessaria para recorrencia, compromissos mensais e dashboard
+- cadastrar fontes de renda
+- preparar a fundacao necessaria para compromissos mensais e dashboard
 
 ### O que ainda nao entra nesta fase
 
-- calculo operacional do mes
+- calculo consolidado do comprometimento
 - leitura de saldo comprometido
 - leitura de saldo livre para gastar
+- configuracao completa de buckets
+- definicao de categorias detalhadas
 - motor de recorrencia de contas
 - dashboard principal
 - logica de cartao de credito
@@ -65,9 +60,9 @@ Entram nessa fase:
 - obrigacoes financeiras com competencia mensal
 - valor previsto da obrigacao
 - vencimento
-- classificacao por categoria e bucket
 - status operacional da obrigacao
 - registro de pagamento quando a conta for quitada
+- leitura do quanto da renda ja esta comprometido
 
 Tambem passa a existir a diferenciacao entre tipos de recorrencia, permitindo registrar contas pontuais, contas fixas mensais e contas recorrentes variaveis.
 
@@ -81,8 +76,7 @@ Tambem passa a existir a diferenciacao entre tipos de recorrencia, permitindo re
 
 ### O que ainda nao entra nesta fase
 
-- calculo consolidado de saldo comprometido
-- calculo de saldo livre para gastar
+- distribuicao guiada do restante por buckets
 - dashboard principal do mes
 - leitura automatica de proximos vencimentos em formato de resumo executivo
 - reaproveitamento automatico de obrigacoes entre meses
@@ -92,7 +86,7 @@ Tambem passa a existir a diferenciacao entre tipos de recorrencia, permitindo re
 
 ### Resumo de negocio
 
-Na Fase 1C, o produto passa a entregar uma leitura operacional do mes, consolidando o setup financeiro e as obrigacoes mensais em um resumo que apoia decisao.
+Na Fase 1C, o produto passa a entregar uma leitura operacional do mes, consolidando renda e obrigacoes mensais em um resumo que apoia decisao.
 
 Em termos de negocio, essa fase faz o sistema responder de forma objetiva:
 
@@ -103,6 +97,8 @@ Em termos de negocio, essa fase faz o sistema responder de forma objetiva:
 - quanto pode ser direcionado para investimento
 
 Tambem passa a existir uma leitura por bucket, comparando a estrutura planejada com o que ja foi pago ou comprometido no mes, alem da lista de proximos vencimentos para apoiar a operacao cotidiana.
+
+Nessa fase, os buckets entram como camada posterior ao cadastro das contas, ajudando a organizar o valor restante do mes.
 
 ### O que essa fase habilita
 
@@ -133,6 +129,13 @@ Em termos de negocio, essa fase habilita:
 - registro da fatura do ciclo
 - leitura do impacto da fatura por competencia mensal
 
+O entendimento refinado do produto e que o cartao deve entrar primeiro de forma simples:
+
+- configuracao estrutural do cartao
+- registro da fatura atual do mes
+
+O detalhamento mais profundo pode vir depois.
+
 Isso aproxima o produto da realidade do caixa, porque compras no cartao deixam de ser vistas apenas como um gasto solto e passam a respeitar o ciclo de fechamento e pagamento.
 
 ### O que essa fase habilita
@@ -162,6 +165,13 @@ Em termos de negocio, essa fase transforma o resumo mensal em registro de aprend
 - consultar depois o retrato consolidado do que foi planejado e do que aconteceu
 
 Isso cria a base para disciplina mensal e para ajustes do modelo financeiro ao longo do tempo.
+
+Tambem passa a existir a base da virada assistida de mes:
+
+- fechar o ciclo anterior
+- preservar o snapshot consolidado
+- abrir o novo mes reaproveitando o que e fixo
+- exigir revisao do que e variavel
 
 ### O que essa fase habilita
 

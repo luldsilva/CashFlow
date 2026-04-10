@@ -1,4 +1,5 @@
 using CashFlow.Communication.Responses;
+using CashFlow.Application.UseCases.CreditCardStatements;
 using CashFlow.Domain.Repositories.CreditCardStatements;
 using CashFlow.Domain.Repositories.Households;
 using CashFlow.Domain.Services.LoggedUser;
@@ -37,19 +38,7 @@ namespace CashFlow.Application.UseCases.CreditCardStatements.GetByMonth
 
             return new ResponseCreditCardStatements
             {
-                Statements = statements.Select(statement => new ResponseCreditCardStatement
-                {
-                    Id = statement.Id,
-                    CreditCardId = statement.CreditCardId,
-                    CreditCardName = statement.CreditCard.Name,
-                    CompetenceDate = statement.CompetenceDate,
-                    ClosingDate = statement.ClosingDate,
-                    DueDate = statement.DueDate,
-                    TotalAmount = statement.TotalAmount,
-                    PaidAmount = statement.PaidAmount,
-                    PaidDate = statement.PaidDate,
-                    Status = (CashFlow.Communication.Enums.CreditCardStatementStatus)statement.Status
-                }).ToList()
+                Statements = statements.Select(CreditCardStatementResponseMapper.Map).ToList()
             };
         }
     }

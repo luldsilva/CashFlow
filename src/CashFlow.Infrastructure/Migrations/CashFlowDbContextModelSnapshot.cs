@@ -39,6 +39,9 @@ namespace CashFlow.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
 
+                    b.Property<long?>("ExpenseCategoryId")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("PaymentType")
                         .HasColumnType("int");
 
@@ -50,6 +53,8 @@ namespace CashFlow.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ExpenseCategoryId");
 
                     b.HasIndex("UserId");
 
@@ -104,7 +109,6 @@ namespace CashFlow.Infrastructure.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("BucketCode")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
@@ -227,6 +231,9 @@ namespace CashFlow.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<long?>("ExpenseCategoryId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("CompetenceDate")
                         .HasColumnType("datetime(6)");
 
@@ -259,6 +266,8 @@ namespace CashFlow.Infrastructure.Migrations
                         .HasColumnType("varchar(150)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ExpenseCategoryId");
 
                     b.HasIndex("HouseholdId", "CompetenceDate");
 
@@ -497,12 +506,18 @@ namespace CashFlow.Infrastructure.Migrations
 
             modelBuilder.Entity("CashFlow.Domain.Entities.Expense", b =>
                 {
+                    b.HasOne("CashFlow.Domain.Entities.ExpenseCategory", "ExpenseCategory")
+                        .WithMany("Expenses")
+                        .HasForeignKey("ExpenseCategoryId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("CashFlow.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("ExpenseCategory");
                     b.Navigation("User");
                 });
 
@@ -574,12 +589,18 @@ namespace CashFlow.Infrastructure.Migrations
 
             modelBuilder.Entity("CashFlow.Domain.Entities.FinancialObligation", b =>
                 {
+                    b.HasOne("CashFlow.Domain.Entities.ExpenseCategory", "ExpenseCategory")
+                        .WithMany("FinancialObligations")
+                        .HasForeignKey("ExpenseCategoryId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("CashFlow.Domain.Entities.Household", "Household")
                         .WithMany("FinancialObligations")
                         .HasForeignKey("HouseholdId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("ExpenseCategory");
                     b.Navigation("Household");
                 });
 

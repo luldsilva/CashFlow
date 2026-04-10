@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CashFlow.Application.AutoMapper;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace CommonTestUtilities.Mapper
 {
@@ -10,7 +11,7 @@ namespace CommonTestUtilities.Mapper
             var mapper = new MapperConfiguration(c =>
             {
                 c.AddProfile(new AutoMapping());
-            });
+            }, NullLoggerFactory.Instance);
 
             return mapper.CreateMapper();
         }

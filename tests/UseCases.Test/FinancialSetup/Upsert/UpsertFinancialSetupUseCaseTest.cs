@@ -1,4 +1,4 @@
-using CashFlow.Application.UseCases.FinancialSetup.Upsert;
+using CashFlow.Application.UseCases.FinancialSetup.Register;
 using CashFlow.Domain.Entities;
 using CashFlow.Domain.Repositories;
 using CashFlow.Domain.Repositories.Households;
@@ -48,7 +48,7 @@ namespace UseCases.Test.FinancialSetup.Upsert
             result.Where(ex => ex.GetErrors().Contains("Active planning buckets must sum 100%."));
         }
 
-        private static UpsertFinancialSetupUseCase CreateUseCase(
+        private static RegisterFinancialSetupUseCase CreateUseCase(
             IHouseholdWriteOnlyRepository? writeRepository = null,
             IUnitOfWork? unitOfWork = null)
         {
@@ -62,7 +62,7 @@ namespace UseCases.Test.FinancialSetup.Upsert
                 .Setup(service => service.Get())
                 .ReturnsAsync(new User { Id = 99 });
 
-            return new UpsertFinancialSetupUseCase(
+            return new RegisterFinancialSetupUseCase(
                 readRepository.Object,
                 writeRepository ?? Mock.Of<IHouseholdWriteOnlyRepository>(),
                 loggedUser.Object,

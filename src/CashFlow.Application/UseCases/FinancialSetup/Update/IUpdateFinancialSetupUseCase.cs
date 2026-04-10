@@ -1,9 +1,9 @@
 using CashFlow.Communication.Requests;
 using CashFlow.Communication.Responses;
 
-namespace CashFlow.Application.UseCases.FinancialSetup.Upsert
+namespace CashFlow.Application.UseCases.FinancialSetup.Update
 {
-    public interface IUpsertFinancialSetupUseCase
+    public interface IUpdateFinancialSetupUseCase
     {
         Task<ResponseFinancialSetup> Execute(RequestUpsertFinancialSetup request);
     }

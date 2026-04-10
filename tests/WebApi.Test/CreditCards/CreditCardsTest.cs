@@ -48,8 +48,8 @@ namespace WebApi.Test.CreditCards
         private async Task EnsureFinancialSetup()
         {
             var request = RequestUpsertFinancialSetupBuilder.Build();
-            var response = await _httpClient.PutAsJsonAsync("api/financial-setup", request);
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var response = await _httpClient.PostAsJsonAsync("api/financial-setup", request);
+            response.StatusCode.Should().BeOneOf(HttpStatusCode.Created, HttpStatusCode.Conflict);
         }
 
         private async Task Authenticate()

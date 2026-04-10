@@ -1,5 +1,21 @@
 # Contexto da Próxima Sessão
 
+## Status mais recente
+
+Depois da ultima rodada de backend, a prioridade operacional mudou.
+
+Foco atual:
+
+- testes do frontend
+- validacao de fluxos reais
+- correcao de bugs de integracao
+
+Diretriz atual:
+
+- nao puxar nova frente de evolucao de backend por padrao
+- usar o backend da proxima sessao principalmente para corrigir bugs ou desalinhamentos encontrados pelo frontend
+- se os testes do frontend passarem sem bloqueios relevantes, registrar backlog e postergar novas mudancas estruturais do backend
+
 ## O que foi consolidado no backend até aqui
 
 - Infra local estabilizada com:
@@ -87,10 +103,40 @@ Direcao consolidada:
 - investimentos entram como segunda prioridade
 - Open Finance e integracoes externas entram depois do core financeiro
 
+## Ponto 4 que passa a orientar a proxima rodada
+
+### 4. Onboarding em duas etapas e virada de mes assistida
+
+O entendimento mais recente refinou o fluxo principal do produto.
+
+Nova leitura consolidada:
+
+- o onboarding deve começar por estrutura familiar e renda
+- o usuario deve ir direto para o cadastro das obrigacoes principais do mes
+- o sistema deve calcular primeiro o quanto da renda ja esta comprometido
+- buckets e distribuicao do restante entram so depois dessa leitura
+- o dashboard deve ser a chegada natural depois desse fluxo
+
+Tambem ficou decidido que a operacao mensal nao pode exigir recadastro completo.
+
+O sistema deve evoluir para:
+
+- reaproveitar renda fixa e contas fixas na virada de mes
+- copiar contas variaveis como base com aviso de revisao
+- permitir ajuste do mes atual a qualquer momento
+- preservar o mes fechado como snapshot historico
+
+Referencias principais desta direcao:
+
+- [`docs/product-roadmap-context.md`](/mnt/c/Users/lucas/source/repos/CashFlow/docs/product-roadmap-context.md)
+- [`docs/core-financial-business-rules.md`](/mnt/c/Users/lucas/source/repos/CashFlow/docs/core-financial-business-rules.md)
+
 ## Direção sugerida para a próxima sessão
 
-1. usar [`docs/product-roadmap-context.md`](/home/lucaslisilva/projetos/CashFlow/docs/product-roadmap-context.md) como base da próxima sessão
-2. começar pelo refinamento e implementacao do core de planejamento financeiro familiar
-3. definir entidades, contratos e regras de negocio do onboarding, recorrencia, buckets e dashboard
-4. alinhar backend e frontend sobre a nova experiencia principal do produto
-5. deixar investimentos como proxima camada apos consolidar o core financeiro
+1. usar [`docs/core-financial-business-rules.md`](/mnt/c/Users/lucas/source/repos/CashFlow/docs/core-financial-business-rules.md) como referencia principal
+2. separar conceitualmente `setup estrutural` de `mes operacional`
+3. redefinir contratos do onboarding para remover a dependencia precoce de buckets
+4. adaptar obrigacoes e dashboard para funcionar antes da configuracao completa do modelo percentual
+5. desenhar a virada de mes com reaproveitamento e snapshot
+6. alinhar backend e frontend sobre passos curtos, didaticos e confiaveis
+7. deixar investimentos como proxima camada apos consolidar o core financeiro mensal

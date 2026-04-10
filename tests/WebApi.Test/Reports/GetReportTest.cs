@@ -73,6 +73,41 @@ namespace WebApi.Test.Reports
             file.Should().NotBeEmpty();
         }
 
+        [Fact]
+        public async Task GetExcel_Should_Not_Return_Another_User_Expenses()
+        {
+            await Authenticate();
+
+            var request = RequestRegisterExpenseBuilder.Build();
+            request.Date = new DateTime(2024, 9, 10, 10, 0, 0);
+
+            var registerResponse = await _httpClient.PostAsJsonAsync("api/Expenses", request);
+            registerResponse.StatusCode.Should().Be(HttpStatusCode.Created);
+
+            using var secondClient = _webApplicationFactory.CreateClient();
+            var secondUser = RequestRegisterUserBuilder.Build();
+
+            var registerUserResponse = await secondClient.PostAsJsonAsync("api/User", secondUser);
+            registerUserResponse.StatusCode.Should().Be(HttpStatusCode.Created);
+
+            var loginResponse = await secondClient.PostAsJsonAsync("api/Login", new RequestLogin
+            {
+                Email = secondUser.Email,
+                Password = secondUser.Password
+            });
+            loginResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            var loginBody = await loginResponse.Content.ReadAsStreamAsync();
+            var loginJson = await JsonDocument.ParseAsync(loginBody);
+            var token = loginJson.RootElement.GetProperty("token").GetString();
+
+            secondClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await secondClient.GetAsync("api/Report/excel?month=2024-09-01");
+
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
         private async Task Authenticate()
         {
             var login = new RequestLogin

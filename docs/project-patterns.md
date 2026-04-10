@@ -12,6 +12,7 @@ Antes de implementar qualquer feature nova, consultar este arquivo junto com:
 
 - [`docs/infra-decisions.md`](/home/lucaslisilva/projetos/CashFlow/docs/infra-decisions.md)
 - [`docs/infra-plan.md`](/home/lucaslisilva/projetos/CashFlow/docs/infra-plan.md)
+- [`docs/core-financial-business-rules.md`](/mnt/c/Users/lucas/source/repos/CashFlow/docs/core-financial-business-rules.md)
 
 ## Direcao Arquitetural Atual
 

@@ -33,6 +33,7 @@ namespace CashFlow.Infrastructure.Repositories
         {
             return await _dbContext.FinancialObligations
                 .AsNoTracking()
+                .Include(obligation => obligation.ExpenseCategory)
                 .Where(obligation => obligation.HouseholdId == householdId && obligation.CompetenceDate == competenceDate)
                 .OrderBy(obligation => obligation.DueDate)
                 .ThenBy(obligation => obligation.Title)
@@ -43,18 +44,27 @@ namespace CashFlow.Infrastructure.Repositories
         {
             return await _dbContext.FinancialObligations
                 .AsNoTracking()
+                .Include(obligation => obligation.ExpenseCategory)
                 .FirstOrDefaultAsync(obligation => obligation.HouseholdId == householdId && obligation.Id == id);
         }
 
         async Task<FinancialObligation?> IFinancialObligationsUpdateOnlyRepository.GetById(long householdId, long id)
         {
             return await _dbContext.FinancialObligations
+                .Include(obligation => obligation.ExpenseCategory)
                 .FirstOrDefaultAsync(obligation => obligation.HouseholdId == householdId && obligation.Id == id);
         }
 
         public void Update(FinancialObligation obligation)
         {
             _dbContext.FinancialObligations.Update(obligation);
+        }
+
+        public async Task<bool> ExistsByCategory(long householdId, long categoryId)
+        {
+            return await _dbContext.FinancialObligations
+                .AsNoTracking()
+                .AnyAsync(obligation => obligation.HouseholdId == householdId && obligation.ExpenseCategoryId == categoryId);
         }
     }
 }

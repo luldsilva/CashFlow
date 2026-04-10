@@ -4,6 +4,28 @@
 
 Registrar o ponto exato em que o backend foi deixado ao final da Fase 1, para que a próxima sessão possa começar diretamente na Fase 2, sem precisar remontar o contexto do produto e da implementação.
 
+## Status deste documento
+
+Este documento passou a ficar parcialmente desatualizado depois do refinamento mais recente do produto.
+
+Motivo:
+
+- a Fase 1 ainda nao deve ser tratada como semanticamente consolidada do ponto de vista de experiencia
+- o onboarding, a distribuicao por buckets e a virada de mes foram reposicionados
+- antes de entrar forte em investimentos, o core mensal precisa ser reestruturado
+
+Referencias que passam a prevalecer:
+
+- [`docs/product-roadmap-context.md`](/mnt/c/Users/lucas/source/repos/CashFlow/docs/product-roadmap-context.md)
+- [`docs/core-financial-business-rules.md`](/mnt/c/Users/lucas/source/repos/CashFlow/docs/core-financial-business-rules.md)
+- [`docs/next-session-context.md`](/mnt/c/Users/lucas/source/repos/CashFlow/docs/next-session-context.md)
+
+Observacao adicional do estado atual:
+
+- a prioridade imediata deixou de ser avancar para investimentos
+- o momento atual esta concentrado em testes do frontend e correcao de bugs de integracao
+- qualquer retomada de Fase 2 no backend deve acontecer so depois que a rodada de estabilizacao com o frontend estiver madura
+
 ## Estado consolidado ao final da sessão
 
 O backend concluiu o core da Fase 1 do produto, cobrindo:
@@ -123,6 +145,20 @@ Migrations esperadas:
 - `20260403150000_AddCreditCardsAndMonthlyClosures`
 
 ## Proxima etapa planejada
+
+Observacao:
+
+- tecnicamente existe fundacao para seguir para investimentos
+- estrategicamente, o recomendado agora e consolidar primeiro o novo fluxo do core financeiro mensal
+
+Nova ordem recomendada antes de Fase 2:
+
+- separar setup estrutural de mes operacional
+- revisar onboarding em duas etapas
+- remover dependencia precoce de buckets
+- modelar melhor reaproveitamento e snapshot mensal
+
+Depois disso, a Fase 2 de investimentos volta a fazer sentido sobre uma base mais coerente.
 
 O proximo ciclo comeca em `Fase 2 - investimentos`.
 

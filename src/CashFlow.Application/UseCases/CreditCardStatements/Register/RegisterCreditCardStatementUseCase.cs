@@ -1,3 +1,4 @@
+using CashFlow.Application.UseCases.CreditCardStatements;
 using CashFlow.Communication.Requests;
 using CashFlow.Communication.Responses;
 using CashFlow.Domain.Entities;
@@ -66,19 +67,9 @@ namespace CashFlow.Application.UseCases.CreditCardStatements.Register
             await _repository.Add(statement);
             await _unitOfWork.Commit();
 
-            return new ResponseCreditCardStatement
-            {
-                Id = statement.Id,
-                CreditCardId = creditCard.Id,
-                CreditCardName = creditCard.Name,
-                CompetenceDate = statement.CompetenceDate,
-                ClosingDate = statement.ClosingDate,
-                DueDate = statement.DueDate,
-                TotalAmount = statement.TotalAmount,
-                PaidAmount = statement.PaidAmount,
-                PaidDate = statement.PaidDate,
-                Status = request.Status
-            };
+            statement.CreditCard = creditCard;
+
+            return CreditCardStatementResponseMapper.Map(statement);
         }
 
         private static void Validate(RequestCreditCardStatement request)
